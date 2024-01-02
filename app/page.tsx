@@ -1,6 +1,5 @@
+import { Container } from '@mui/material';
 
-export default function Home(){
-  return (
-    <div>Hello</div>
-  );
+export default function Home() {
+  return <Container>Hello</Container>;
 }

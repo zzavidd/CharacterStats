@@ -1,10 +1,11 @@
+import ThemeManager from 'src/fragments/ThemeManager';
 
-export default function RootLayout({
-  children,
-}: React.PropsWithChildren) {
+export default function RootLayout({ children }: React.PropsWithChildren) {
   return (
     <html lang={'en'}>
-      <body>{children}</body>
+      <body>
+        <ThemeManager>{children}</ThemeManager>
+      </body>
     </html>
   );
 }
