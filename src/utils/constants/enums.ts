@@ -17,6 +17,7 @@ export enum Type {
   ROCK = 'Rock',
   STEEL = 'Steel',
   WATER = 'Water',
+  UNKNOWN = '???',
 }
 
 export enum Generation {
@@ -43,4 +44,13 @@ export enum DamageClass {
   PHYSICAL = 'physical',
   SPECIAL = 'special',
   STATUS = 'status',
+}
+
+export enum Universe {
+  DC = 1,
+  MARVEL = 2,
+  SMASH = 3,
+  SONIC = 4,
+  BEN10 = 5,
+  GYVENIMAS = 6,
 }

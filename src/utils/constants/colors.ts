@@ -9,7 +9,7 @@ export const STAT = {
   [Stat.SPEED]: '#A13959',
 };
 
-export const TYPE = {
+export const COLOR_TYPE = {
   [Type.BUG]: '#6D7815',
   [Type.DARK]: '#49392F',
   [Type.DRAGON]: '#4924A1',
@@ -28,6 +28,7 @@ export const TYPE = {
   [Type.ROCK]: '#786824',
   [Type.STEEL]: '#787887',
   [Type.WATER]: '#445E9C',
+  [Type.UNKNOWN]: '#68a090',
 };
 
 export const GENERATION = {

@@ -1,30 +1,56 @@
+import Physical from 'src/assets/icons/classes/Physical.png';
+import Special from 'src/assets/icons/classes/Special.png';
+import Status from 'src/assets/icons/classes/Status.png';
+import Bug from 'src/assets/icons/types/Bug.png';
+import Dark from 'src/assets/icons/types/Dark.png';
+import Dragon from 'src/assets/icons/types/Dragon.png';
+import Electric from 'src/assets/icons/types/Electric.png';
+import Fairy from 'src/assets/icons/types/Fairy.png';
+import Fighting from 'src/assets/icons/types/Fighting.png';
+import Fire from 'src/assets/icons/types/Fire.png';
+import Flying from 'src/assets/icons/types/Flying.png';
+import Ghost from 'src/assets/icons/types/Ghost.png';
+import Grass from 'src/assets/icons/types/Grass.png';
+import Ground from 'src/assets/icons/types/Ground.png';
+import Ice from 'src/assets/icons/types/Ice.png';
+import {
+  default as Normal,
+  default as Unknown,
+} from 'src/assets/icons/types/Normal.png';
+import Poison from 'src/assets/icons/types/Poison.png';
+import Psychic from 'src/assets/icons/types/Psychic.png';
+import Rock from 'src/assets/icons/types/Rock.png';
+import Steel from 'src/assets/icons/types/Steel.png';
+import Water from 'src/assets/icons/types/Water.png';
+
 import { DamageClass, Type } from './enums';
 
 const PokeIcon = <const>{
   Classes: {
-    [DamageClass.PHYSICAL]: require('assets/icons/classes/Physical.png'),
-    [DamageClass.SPECIAL]: require('assets/icons/classes/Special.png'),
-    [DamageClass.STATUS]: require('assets/icons/classes/Status.png'),
+    [DamageClass.PHYSICAL]: Physical,
+    [DamageClass.SPECIAL]: Special,
+    [DamageClass.STATUS]: Status,
   },
   Types: {
-    [Type.BUG]: require('assets/icons/types/Bug.png'),
-    [Type.DARK]: require('assets/icons/types/Dark.png'),
-    [Type.DRAGON]: require('assets/icons/types/Dragon.png'),
-    [Type.ELECTRIC]: require('assets/icons/types/Electric.png'),
-    [Type.FAIRY]: require('assets/icons/types/Fairy.png'),
-    [Type.FIGHTING]: require('assets/icons/types/Fighting.png'),
-    [Type.FIRE]: require('assets/icons/types/Fire.png'),
-    [Type.FLYING]: require('assets/icons/types/Flying.png'),
-    [Type.GHOST]: require('assets/icons/types/Ghost.png'),
-    [Type.GRASS]: require('assets/icons/types/Grass.png'),
-    [Type.GROUND]: require('assets/icons/types/Ground.png'),
-    [Type.ICE]: require('assets/icons/types/Ice.png'),
-    [Type.NORMAL]: require('assets/icons/types/Normal.png'),
-    [Type.POISON]: require('assets/icons/types/Poison.png'),
-    [Type.PSYCHIC]: require('assets/icons/types/Psychic.png'),
-    [Type.ROCK]: require('assets/icons/types/Rock.png'),
-    [Type.STEEL]: require('assets/icons/types/Steel.png'),
-    [Type.WATER]: require('assets/icons/types/Water.png'),
+    [Type.BUG]: Bug,
+    [Type.DARK]: Dark,
+    [Type.DRAGON]: Dragon,
+    [Type.ELECTRIC]: Electric,
+    [Type.FAIRY]: Fairy,
+    [Type.FIGHTING]: Fighting,
+    [Type.FIRE]: Fire,
+    [Type.FLYING]: Flying,
+    [Type.GHOST]: Ghost,
+    [Type.GRASS]: Grass,
+    [Type.GROUND]: Ground,
+    [Type.ICE]: Ice,
+    [Type.NORMAL]: Normal,
+    [Type.POISON]: Poison,
+    [Type.PSYCHIC]: Psychic,
+    [Type.ROCK]: Rock,
+    [Type.STEEL]: Steel,
+    [Type.WATER]: Water,
+    [Type.UNKNOWN]: Unknown,
   },
 };
 

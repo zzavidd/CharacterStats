@@ -1,14 +1,13 @@
 import type { QueryResult } from '@apollo/client';
-import type { FirebaseError } from 'firebase/app';
 import type { Dispatch, SetStateAction } from 'react';
+import type { z } from 'zod';
+
+import type { DamageClass, Type } from 'src/utils/constants/enums';
 import type {
   zCharacter,
   zCharacterUpdateInput,
   zStats,
 } from 'src/utils/validators';
-import type { z } from 'zod';
-
-import type { DamageClass, Type } from 'src/utils/constants/enums';
 
 declare global {
   export type Character = z.infer<typeof zCharacter>;
@@ -104,14 +103,5 @@ declare global {
     name: string;
   }
 
-  export interface FirestoreResult<T> {
-    data: T;
-    error: FirebaseError | null;
-    loading: boolean;
-  }
-
-  export type ApolloResult<T> = Pick<
-    QueryResult<T>,
-    'data' | 'error' | 'loading'
-  >;
+  type ApolloResult<T> = Pick<QueryResult<T>, 'data' | 'error' | 'loading'>;
 }

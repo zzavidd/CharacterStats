@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { Stat, Type } from './constants/enums';
+import { Stat, Type, Universe } from './constants/enums';
 
 export const zStats = z.object({
   [Stat.HP]: z.number(),
@@ -14,16 +14,16 @@ export const zStats = z.object({
 export const zCharacter = z.object({
   id: z.string().optional(),
   name: z.string(),
-  universe: z.number().optional(),
-  type1: z.nativeEnum(Type).nullable(),
+  universe: z.nativeEnum(Universe),
+  type1: z.nativeEnum(Type),
   type2: z.nativeEnum(Type).nullable(),
   ability1: z.number().nullable(),
   ability2: z.number().nullable(),
   abilityX: z.number().nullable(),
   stats: zStats,
   learnset: z.record(z.string(), z.number().array()),
+  lastModified: z.number(),
   createTime: z.number(),
-  lastModified: z.number().optional(),
 });
 
 export const zCharacterUpdateInput = zCharacter.omit({ createTime: true });

@@ -1,11 +1,4 @@
-export enum Universe {
-  DC = 1,
-  MARVEL = 2,
-  SMASH = 3,
-  SONIC = 4,
-  BEN10 = 5,
-  GYVENIMAS = 6,
-}
+import { Universe } from './enums';
 
 export const Universes: Record<number, string> = {
   [Universe.DC]: 'DC',
