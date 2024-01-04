@@ -1,10 +1,10 @@
 import type { PaletteOptions } from '@mui/material';
-import { indigo, purple } from '@mui/material/colors';
+import { indigo } from '@mui/material/colors';
 
 export const palette: PaletteOptions = {
   mode: 'dark',
   primary: {
-    main: purple['A100'],
+    main: '#7767ee',
   },
   secondary: {
     main: indigo[100],

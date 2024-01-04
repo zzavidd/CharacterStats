@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-empty-interface */
 import { configureStore, createSlice } from '@reduxjs/toolkit';
+import { Order } from 'natural-orderby';
 import type { TypedUseSelectorHook } from 'react-redux';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -18,7 +19,11 @@ import * as reducers from './actions';
 
 export const InitialAppState: AppState = {
   filters: [],
-  sort: 0,
+  sort: {
+    property: 0,
+    order: 'asc',
+  },
+  group: 0,
 };
 
 const slice = createSlice({
@@ -48,7 +53,11 @@ export const useAppSelector: TypedUseSelectorHook<AppState> = useSelector;
 
 export interface AppState {
   filters: [];
-  sort: number;
+  sort: {
+    property: number;
+    order: Order;
+  };
+  group: number;
 }
 
 type AppDispatch = typeof store.dispatch;

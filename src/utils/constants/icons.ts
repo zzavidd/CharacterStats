@@ -13,10 +13,7 @@ import Ghost from 'src/assets/icons/types/Ghost.png';
 import Grass from 'src/assets/icons/types/Grass.png';
 import Ground from 'src/assets/icons/types/Ground.png';
 import Ice from 'src/assets/icons/types/Ice.png';
-import {
-  default as Normal,
-  default as Unknown,
-} from 'src/assets/icons/types/Normal.png';
+import Normal from 'src/assets/icons/types/Normal.png';
 import Poison from 'src/assets/icons/types/Poison.png';
 import Psychic from 'src/assets/icons/types/Psychic.png';
 import Rock from 'src/assets/icons/types/Rock.png';
@@ -25,7 +22,7 @@ import Water from 'src/assets/icons/types/Water.png';
 
 import { DamageClass, Type } from './enums';
 
-const PokeIcon = <const>{
+const Icon = <const>{
   Classes: {
     [DamageClass.PHYSICAL]: Physical,
     [DamageClass.SPECIAL]: Special,
@@ -50,8 +47,8 @@ const PokeIcon = <const>{
     [Type.ROCK]: Rock,
     [Type.STEEL]: Steel,
     [Type.WATER]: Water,
-    [Type.UNKNOWN]: Unknown,
+    [Type.UNKNOWN]: Normal,
   },
 };
 
-export default PokeIcon;
+export default Icon;

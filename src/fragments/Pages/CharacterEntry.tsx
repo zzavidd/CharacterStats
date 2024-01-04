@@ -6,7 +6,7 @@ import React, { useContext } from 'react';
 import { COLOR_TYPE } from 'src/utils/constants/colors';
 import { StatMap } from 'src/utils/constants/defaults';
 import { Stat } from 'src/utils/constants/enums';
-import PokeIcon from 'src/utils/constants/icons';
+import Icon from 'src/utils/constants/icons';
 import { Universes } from 'src/utils/constants/options';
 import { CharacterContext } from 'src/utils/contexts';
 
@@ -22,7 +22,7 @@ const CharacterEntry = React.memo<{ character: Character }>(
         <Box
           sx={{
             background: `linear-gradient(45deg, ${color1} 0 84%, ${color2} 85% 100%)`,
-            borderRadius: 0.5,
+            borderRadius: 1.2,
             p: 4,
             height: '100%',
           }}>
@@ -32,7 +32,7 @@ const CharacterEntry = React.memo<{ character: Character }>(
             columnGap={2}>
             <Box>
               <Typography variant={'h2'}>{c.name}</Typography>
-              <Typography>{Universes[c.universe]}</Typography>
+              <Typography fontSize={'80%'}>{Universes[c.universe]}</Typography>
             </Box>
             <Box>
               {[c.type1, c.type2].map((type) => {
@@ -44,12 +44,12 @@ const CharacterEntry = React.memo<{ character: Character }>(
                     columnGap={1}
                     key={type}>
                     <Image
-                      src={PokeIcon.Types[type]}
+                      src={Icon.Types[type]}
                       alt={type}
                       height={16}
                       width={16}
                     />
-                    <Typography>{type}</Typography>
+                    <Typography fontWeight={600}>{type}</Typography>
                   </Stack>
                 );
               })}
@@ -61,18 +61,16 @@ const CharacterEntry = React.memo<{ character: Character }>(
             justifyContent={'space-between'}
             columnGap={2}>
             <Box>
-              {c.ability1 ? (
-                <Typography>{abilities[c.ability1].name}</Typography>
-              ) : (
-                c.ability1
-              )}
-              {c.ability2 ? (
-                <Typography>{abilities[c.ability2].name}</Typography>
-              ) : (
-                c.ability2
-              )}
+              {[c.ability1, c.ability2, c.abilityX].map((ability) => {
+                if (!ability) return null;
+                return (
+                  <Typography key={ability}>
+                    {abilities[ability].name}
+                  </Typography>
+                );
+              })}
             </Box>
-            <Stack direction={'row'} columnGap={3}>
+            <Stack direction={'row'} columnGap={4}>
               {[stats.slice(0, 3), stats.slice(3)].map((half, i) => (
                 <Stack key={i}>
                   {half.map(([stat, value]) => (

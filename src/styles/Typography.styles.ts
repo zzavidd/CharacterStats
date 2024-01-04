@@ -10,10 +10,12 @@ export const kanit = DM_Sans({
 });
 
 const typography: TypographyOptions = {
-  fontWeightLight: '500',
   fontFamily: kanit.style.fontFamily,
+  fontSize: 13,
   h2: {
-    fontSize: 24,
+    fontSize: 20,
+    fontWeight: 600,
+    marginBottom: 4,
   },
 };
 
