@@ -15,10 +15,15 @@ import {
 } from 'redux-persist';
 import localStorage from 'redux-persist/lib/storage';
 
+import { Type, Universe } from '../constants/enums';
+
 import * as reducers from './actions';
 
 export const InitialAppState: AppState = {
-  filters: [],
+  filters: {
+    type: [],
+    universe: [],
+  },
   sort: {
     property: 0,
     order: 'asc',
@@ -52,7 +57,10 @@ export const useAppDispatch: () => AppDispatch = useDispatch;
 export const useAppSelector: TypedUseSelectorHook<AppState> = useSelector;
 
 export interface AppState {
-  filters: [];
+  filters: {
+    type: Type[];
+    universe: Universe[];
+  };
   sort: {
     property: number;
     order: Order;

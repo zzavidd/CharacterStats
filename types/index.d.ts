@@ -1,4 +1,3 @@
-import type { QueryResult } from '@apollo/client';
 import type { Dispatch, SetStateAction } from 'react';
 import type { z } from 'zod';
 
@@ -97,11 +96,4 @@ declare global {
     id: number;
     name: string;
   }
-
-  export interface Universe {
-    id: number;
-    name: string;
-  }
-
-  type ApolloResult<T> = Pick<QueryResult<T>, 'data' | 'error' | 'loading'>;
 }

@@ -7,7 +7,6 @@ import { COLOR_TYPE } from 'src/utils/constants/colors';
 import { StatMap } from 'src/utils/constants/defaults';
 import { Stat } from 'src/utils/constants/enums';
 import Icon from 'src/utils/constants/icons';
-import { Universes } from 'src/utils/constants/options';
 import { CharacterContext } from 'src/utils/contexts';
 
 const CharacterEntry = React.memo<{ character: Character }>(
@@ -32,7 +31,7 @@ const CharacterEntry = React.memo<{ character: Character }>(
             columnGap={2}>
             <Box>
               <Typography variant={'h2'}>{c.name}</Typography>
-              <Typography fontSize={'80%'}>{Universes[c.universe]}</Typography>
+              <Typography fontSize={'80%'}>{c.universe}</Typography>
             </Box>
             <Box>
               {[c.type1, c.type2].map((type) => {
@@ -70,19 +69,15 @@ const CharacterEntry = React.memo<{ character: Character }>(
                 );
               })}
             </Box>
-            <Stack direction={'row'} columnGap={4}>
-              {[stats.slice(0, 3), stats.slice(3)].map((half, i) => (
-                <Stack key={i}>
-                  {half.map(([stat, value]) => (
-                    <Stack
-                      direction={'row'}
-                      justifyContent={'space-between'}
-                      columnGap={3}
-                      key={stat}>
-                      <Typography>{StatMap[stat as Stat]}:</Typography>
-                      <Typography>{value}</Typography>
-                    </Stack>
-                  ))}
+            <Stack>
+              {stats.map(([stat, value]) => (
+                <Stack
+                  direction={'row'}
+                  justifyContent={'space-between'}
+                  columnGap={3}
+                  key={stat}>
+                  <Typography>{StatMap[stat as Stat]}:</Typography>
+                  <Typography>{value}</Typography>
                 </Stack>
               ))}
             </Stack>

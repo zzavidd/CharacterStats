@@ -47,10 +47,10 @@ export enum DamageClass {
 }
 
 export enum Universe {
-  DC = 1,
-  MARVEL = 2,
-  SMASH = 3,
-  SONIC = 4,
-  BEN10 = 5,
-  GYVENIMAS = 6,
+  DC = 'DC',
+  MARVEL = 'Marvel',
+  SMASH = 'Smash',
+  SONIC = 'Sonic',
+  BEN10 = 'Ben 10',
+  GYVENIMAS = 'Gyvenimas',
 }

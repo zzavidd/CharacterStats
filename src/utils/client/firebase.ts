@@ -17,8 +17,14 @@ export default firestore;
 
 export const converter: FirestoreDataConverter<Character> = {
   toFirestore: (character) => ({ ...character }),
-  fromFirestore: (snapshot) =>
-    zCharacter.parse({ ...snapshot.data(), id: snapshot.id }),
+  fromFirestore: (snapshot) => {
+    const character = snapshot.data();
+    try {
+      return zCharacter.parse({ ...character, id: snapshot.id });
+    } catch (e) {
+      throw new Error(`Could not parse ${character.name}`);
+    }
+  },
 };
 
 export const characterCollection = collection(

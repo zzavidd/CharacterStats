@@ -12,7 +12,7 @@ import { CharacterContext } from 'src/utils/contexts';
 import { useAppSelector } from 'src/utils/reducers';
 
 import CharacterEntry from './CharacterEntry';
-import CharacterSieveForm from './CharacterSieveForm';
+import CharacterSieveForm, { SIEVE_FORM_WIDTH } from './CharacterSieveForm';
 
 export default function CharacterIndex({
   characters: allCharacters,
@@ -21,28 +21,37 @@ export default function CharacterIndex({
   const useDrawer = useState(false);
   const useSearchTerm = useState('');
 
+  const [isDrawerOpen] = useDrawer;
   const [searchTerm] = useSearchTerm;
-  const [isDrawerOpen] = useSearchTerm;
 
   const characters = useCharacterSieve(allCharacters, searchTerm);
 
-  const columnBase = isDrawerOpen ? -1 : 0;
+  const columnBase = isDrawerOpen ? 0 : 1;
   return (
     <CharacterContext.Provider
       value={{ abilities, moves: {}, useDrawer, useSearchTerm }}>
-      <Stack direction={'row'}>
-        <Container maxWidth={false}>
-          <Box py={4}>
+      <Stack
+        direction={'row'}
+        pr={isDrawerOpen ? SIEVE_FORM_WIDTH : 0}
+        sx={{
+          transition: (t) =>
+            t.transitions.create(['all'], {
+              duration: t.transitions.duration.short,
+            }),
+        }}>
+        <Container maxWidth={false} disableGutters={true}>
+          <Box p={4}>
             <Stack rowGap={3}>
               <CharacterControls />
               <Grid
                 container={true}
                 columns={{
-                  xs: columnBase + 1,
-                  sm: columnBase + 2,
-                  md: columnBase + 3,
-                  lg: columnBase + 4,
-                  xl: columnBase + 5,
+                  xs: 1,
+                  sm: columnBase + 1,
+                  md: columnBase + 2,
+                  lg: columnBase + 3,
+                  xl: columnBase + 4,
+                  xxl: columnBase + 5,
                 }}
                 spacing={3}>
                 {characters.map((c) => (
@@ -81,12 +90,26 @@ function useCharacterSieve(
   allCharacters: Character[],
   searchTerm: string,
 ): Character[] {
+  const filters = useAppSelector((s) => s.filters);
   const propertyIndex = useAppSelector((s) => s.sort.property);
   const order = useAppSelector((s) => s.sort.order);
 
   const { identifiers } = SortProperties[propertyIndex];
 
   let characters = allCharacters;
+
+  if (filters.type.length) {
+    characters = characters.filter(
+      (c) =>
+        filters.type.includes(c.type1) ||
+        (c.type2 && filters.type.includes(c.type2)),
+    );
+  }
+  if (filters.universe.length) {
+    characters = characters.filter((c) =>
+      filters.universe.includes(c.universe),
+    );
+  }
 
   if (searchTerm) {
     characters = new Fuse(characters, {
