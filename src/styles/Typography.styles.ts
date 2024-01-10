@@ -12,6 +12,10 @@ export const kanit = DM_Sans({
 const typography: TypographyOptions = {
   fontFamily: kanit.style.fontFamily,
   fontSize: 13,
+  h1: {
+    fontSize: 28,
+    marginBottom: 18,
+  },
   h2: {
     fontSize: 20,
     fontWeight: 600,

@@ -1,0 +1,3 @@
+interface CharacterFormProps {
+  abilities: PokeAbilityMap;
+}

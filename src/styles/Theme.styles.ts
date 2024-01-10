@@ -1,6 +1,7 @@
 import type { ThemeOptions } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
 
+import components from './Components.styles';
 import { palette } from './Palette.styles';
 import typography from './Typography.styles';
 
@@ -15,6 +16,7 @@ export const themeOptions: ThemeOptions = {
       xxl: 1600,
     },
   },
+  components,
   palette,
   shape: {
     borderRadius: 10,

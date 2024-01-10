@@ -8,11 +8,9 @@ import theme from 'src/styles/Theme.styles';
 export default function ThemeManager({ children }: React.PropsWithChildren) {
   return (
     <AppRouterCacheProvider
-      options={
-        {
-          // ...(process.env.NODE_ENV === 'development' && { stylisPlugins: [] }),
-        }
-      }>
+      options={{
+        ...(process.env.NODE_ENV === 'development' && { stylisPlugins: [] }),
+      }}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
         {children}

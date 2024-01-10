@@ -6,7 +6,7 @@ import React, { useContext } from 'react';
 import { COLOR_TYPE } from 'src/utils/constants/colors';
 import { StatMap } from 'src/utils/constants/defaults';
 import { Stat } from 'src/utils/constants/enums';
-import Icon from 'src/utils/constants/icons';
+import AppIcon from 'src/utils/constants/icons';
 import { CharacterContext } from 'src/utils/contexts';
 
 const CharacterEntry = React.memo<{ character: Character }>(
@@ -43,7 +43,7 @@ const CharacterEntry = React.memo<{ character: Character }>(
                     columnGap={1}
                     key={type}>
                     <Image
-                      src={Icon.Types[type]}
+                      src={AppIcon.Types[type]}
                       alt={type}
                       height={16}
                       width={16}

@@ -22,7 +22,7 @@ import Water from 'src/assets/icons/types/Water.png';
 
 import { DamageClass, Type } from './enums';
 
-const Icon = <const>{
+const AppIcon = <const>{
   Classes: {
     [DamageClass.PHYSICAL]: Physical,
     [DamageClass.SPECIAL]: Special,
@@ -51,4 +51,4 @@ const Icon = <const>{
   },
 };
 
-export default Icon;
+export default AppIcon;

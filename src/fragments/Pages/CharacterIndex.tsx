@@ -1,5 +1,6 @@
 'use client';
 
+import { Add, FilterAlt } from '@mui/icons-material';
 import { Box, Button, Container, Stack } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import Fuse from 'fuse.js';
@@ -72,16 +73,24 @@ function CharacterControls() {
   const [isDrawerOpen, setDrawerOpen] = useDrawer;
   const [searchTerm, setSearchTerm] = useSearchTerm;
   return (
-    <Stack direction={'row'} columnGap={2}>
-      <Button variant={'outlined'} onClick={() => setDrawerOpen(!isDrawerOpen)}>
-        Categorise
+    <Stack direction={'row'} justifyContent={'space-between'}>
+      <Button variant={'contained'} startIcon={<Add />} href={'/add'}>
+        Add Character
       </Button>
-      <SearchField
-        value={searchTerm}
-        onChange={setSearchTerm}
-        placeholder={'Search for a character...'}
-        sx={{ minWidth: (t) => t.spacing(12) }}
-      />
+      <Stack direction={'row'} columnGap={2}>
+        <Button
+          variant={'outlined'}
+          startIcon={<FilterAlt />}
+          onClick={() => setDrawerOpen(!isDrawerOpen)}>
+          Categorise
+        </Button>
+        <SearchField
+          value={searchTerm}
+          onChange={setSearchTerm}
+          placeholder={'Search for a character...'}
+          sx={{ minWidth: (t) => t.spacing(12) }}
+        />
+      </Stack>
     </Stack>
   );
 }

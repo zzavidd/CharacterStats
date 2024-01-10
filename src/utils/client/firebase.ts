@@ -22,6 +22,7 @@ export const converter: FirestoreDataConverter<Character> = {
     try {
       return zCharacter.parse({ ...character, id: snapshot.id });
     } catch (e) {
+      console.error(e);
       throw new Error(`Could not parse ${character.name}`);
     }
   },

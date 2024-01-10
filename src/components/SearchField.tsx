@@ -16,7 +16,6 @@ export default function SearchField({ onChange, ...props }: SearchFieldProps) {
     <TextField
       {...props}
       onChange={(e) => onChange(e.target.value)}
-      placeholder={'Search for a character...'}
       InputProps={{
         startAdornment: (
           <InputAdornment position={'start'}>
