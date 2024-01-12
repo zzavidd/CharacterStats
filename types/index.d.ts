@@ -21,7 +21,6 @@ declare global {
   export interface PokeType {
     id: number;
     name: Type;
-    color: string;
   }
 
   export interface PokeMove {
@@ -39,34 +38,9 @@ declare global {
   export interface PokeAbility {
     id: number;
     name: string;
-    color: string;
     generation: number;
     description: string;
     commonType: Type;
-  }
-
-  export interface RawAbility {
-    id: number;
-    name: string;
-    generation: number;
-    description: [
-      {
-        text: string;
-      },
-    ];
-    candidates: [
-      {
-        pokemon: {
-          types: [
-            {
-              type: {
-                name: string;
-              };
-            },
-          ];
-        };
-      },
-    ];
   }
 
   export interface RawMove {

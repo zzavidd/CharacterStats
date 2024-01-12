@@ -31,7 +31,7 @@ export default function AbilitySelect() {
       maxWidth={'xs'}
       keepMounted={true}>
       <DialogTitle>Select an ability</DialogTitle>
-      <DialogContent sx={{ p: 0 }} dividers={true}>
+      <DialogContent sx={{ height: '100vh', p: 0 }} dividers={true}>
         <SearchField
           value={searchTerm}
           onChange={(value) => setSearchTerm(value)}

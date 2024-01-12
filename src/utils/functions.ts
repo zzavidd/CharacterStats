@@ -1,63 +1,89 @@
 import { capitalCase } from 'change-case';
-import { unstable_cache } from 'next/cache';
-import { apolloClient } from './client/graphql';
-import { COLOR_TYPE } from './constants/colors';
+import Papa from 'papaparse';
+import { z } from 'zod';
 import { Type } from './constants/enums';
-import { QUERY_ABILITIES } from './constants/queries';
-
-const getCachedAbilities = unstable_cache(
-  () =>
-    apolloClient.query<{ abilities: RawAbility[] }>({ query: QUERY_ABILITIES }),
-  ['abilities'],
-  { revalidate: 30 * 24 * 60 * 60 },
-);
+import {
+  V2_ABILITIES,
+  V2_ABILITIES_BY_POKEMON,
+  V2_ABILITY_FLAVOR_TEXTS,
+  V2_TYPES,
+  V2_TYPES_BY_POKEMON,
+  zAbilityFlavorTextResponse,
+  zAbilityResponse,
+  zPokemonAbilitiesResponse,
+  zPokemonTypesResponse,
+  zTypeResponse,
+} from './constants/sources';
 
 export async function getAbilities(): Promise<Record<number, PokeAbility>> {
-  const results = await getCachedAbilities();
+  const [v2a, v2b, v2c, v2d, v2e] = await Promise.all([
+    getSource(V2_ABILITIES, zAbilityResponse),
+    getSource(V2_ABILITY_FLAVOR_TEXTS, zAbilityFlavorTextResponse),
+    getSource(V2_ABILITIES_BY_POKEMON, zPokemonAbilitiesResponse),
+    getSource(V2_TYPES_BY_POKEMON, zPokemonTypesResponse),
+    getSource(V2_TYPES, zTypeResponse),
+  ]);
 
-  const abilities = results.data.abilities.reduce(
-    (acc, rawAbility) => {
-      const { id, generation } = rawAbility;
-      const commonType = determineAbilityType(rawAbility);
-      const ability: PokeAbility = {
-        id,
-        name: capitalCase(rawAbility.name),
-        generation,
-        commonType,
-        color: COLOR_TYPE[commonType],
-        description: rawAbility.description[0]?.text,
-      };
-      acc[id] = ability;
-      return acc;
-    },
-    {} as Record<number, PokeAbility>,
+  const types = v2e.reduce<Record<number, string>>(
+    (acc, a) => ({ ...acc, [a.id]: a.identifier }),
+    {},
   );
 
+  const typePerPokemon = v2d.reduce<Record<number, number[]>>(
+    (acc, a) => ({
+      ...acc,
+      [a.pokemon_id]: [...(acc[a.pokemon_id] || []), a.type_id],
+    }),
+    {},
+  );
+
+  const pokemonPerAbility = v2c.reduce<Record<number, number[]>>(
+    (acc, a) => ({
+      ...acc,
+      [a.ability_id]: [...(acc[a.ability_id] || []), a.pokemon_id],
+    }),
+    {},
+  );
+
+  const abilityDescriptions = v2b
+    .filter((e) => e.language_id === 9)
+    .reduce<Record<number, string>>(
+      (acc, a) => ({
+        ...acc,
+        [a.ability_id]: a.flavor_text.replaceAll('\n', ' '),
+      }),
+      {},
+    );
+
+  const abilities = v2a
+    .filter((a) => a.is_main_series)
+    .filter((a) => pokemonPerAbility[a.id])
+    .reduce<PokeAbilityMap>((acc, a) => {
+      const abilityTypes = pokemonPerAbility[a.id].flatMap(
+        (p) => typePerPokemon[p],
+      );
+      const commonTypeId = abilityTypes
+        .sort(
+          (a, b) =>
+            abilityTypes.filter((t) => t === a).length -
+            abilityTypes.filter((t) => t === b).length,
+        )
+        .pop();
+      return {
+        ...acc,
+        [a.id]: {
+          id: a.id,
+          name: capitalCase(a.identifier),
+          generation: a.generation_id,
+          description: abilityDescriptions[a.id],
+          commonType: commonTypeId
+            ? (capitalCase(types[commonTypeId]) as Type)
+            : Type.UNKNOWN,
+        },
+      };
+    }, {});
+
   return abilities;
-}
-
-/**
- * Finds the most common type held by a specified ability's candidates.
- * @param ability The specified ability.
- * @returns The most common type.
- */
-function determineAbilityType({ candidates }: RawAbility): Type {
-  const types: Type[] = [];
-
-  for (const candidate of candidates) {
-    for (const { type } of candidate.pokemon.types) {
-      types.push(capitalCase(type.name) as Type);
-    }
-  }
-
-  const sortedTypes = types.sort((a, b) => {
-    const first = types.filter((type) => type === a).length;
-    const second = types.filter((type) => type === b).length;
-    return first - second;
-  });
-
-  const mostCommonType = sortedTypes.pop() || Type.UNKNOWN;
-  return mostCommonType;
 }
 
 export function calculateBST(stats: Stats): number {
@@ -67,4 +93,19 @@ export function calculateBST(stats: Stats): number {
     }
     return bst;
   }, 0);
+}
+
+async function getSource<T extends {}>(
+  source: string,
+  validator: z.ZodObject<T>,
+): Promise<z.infer<z.ZodObject<T>>[]> {
+  const res = await fetch(source, { next: { revalidate: 24 * 60 * 60 } }).then(
+    (r) => r.text(),
+  );
+  const { data } = Papa.parse<T>(res, {
+    dynamicTyping: true,
+    header: true,
+    skipEmptyLines: true,
+  });
+  return data.map((d) => validator.parse(d));
 }

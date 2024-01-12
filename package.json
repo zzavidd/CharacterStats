@@ -29,6 +29,7 @@
     "natural-orderby": "^3.0.2",
     "next": "14.0.4",
     "next-auth": "^4.24.5",
+    "papaparse": "^5.4.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.49.2",
@@ -38,6 +39,7 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
+    "@types/papaparse": "^5.3.14",
     "@typescript-eslint/eslint-plugin": "^6.17.0",
     "@typescript-eslint/parser": "^6.17.0",
     "@zzavidd/eslint-config": "^1.6.0",
