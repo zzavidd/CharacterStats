@@ -1,7 +1,7 @@
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
 import { CharacterAddForm } from 'src/fragments/Pages/CharacterForm';
-import { getAbilities } from 'src/utils/functions';
+import { getAbilities, getMoves } from 'src/utils/functions';
 
 export default async function AddPage() {
   const session = await getServerSession();
@@ -10,5 +10,6 @@ export default async function AddPage() {
   }
 
   const abilities = await getAbilities();
-  return <CharacterAddForm abilities={abilities} />;
+  const moves = await getMoves();
+  return <CharacterAddForm abilities={abilities} moves={moves} />;
 }

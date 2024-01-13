@@ -36,4 +36,5 @@ export const zCharacterInput = zCharacter
     universe: z.nativeEnum(Universe).optional(),
     type1: z.nativeEnum(Type).optional(),
     ability1: z.number().optional(),
+    learnset: z.object({ level: z.number(), moveId: z.number() }).array(),
   });

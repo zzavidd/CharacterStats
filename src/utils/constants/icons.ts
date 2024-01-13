@@ -48,6 +48,7 @@ const AppIcon = <const>{
     [Type.STEEL]: Steel,
     [Type.WATER]: Water,
     [Type.UNKNOWN]: Normal,
+    [Type.SHADOW]: Dark,
   },
 };
 

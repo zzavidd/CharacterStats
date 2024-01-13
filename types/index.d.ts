@@ -16,23 +16,18 @@ declare global {
   export type TypeKey = 'type1' | 'type2';
 
   export type PokeAbilityMap = Record<number, PokeAbility>;
-  export type PokeMoveMap = Record<string, PokeMove>;
-
-  export interface PokeType {
-    id: number;
-    name: Type;
-  }
+  export type PokeMoveMap = Record<number, PokeMove>;
 
   export interface PokeMove {
     id: number;
     name: string;
-    color: string;
-    accuracy: number;
     description: string;
-    power: number;
-    pp: number;
+    power: number | null;
+    pp: number | null;
+    accuracy: number | null;
     type: Type;
     damageClass: DamageClass;
+    generation: number;
   }
 
   export interface PokeAbility {
@@ -41,29 +36,5 @@ declare global {
     generation: number;
     description: string;
     commonType: Type;
-  }
-
-  export interface RawMove {
-    id: number;
-    name: string;
-    accuracy: number;
-    power: number;
-    pp: number;
-    type: {
-      name: string;
-    };
-    damageClass: {
-      name: string;
-    };
-    description: [
-      {
-        text: string;
-      },
-    ];
-  }
-
-  export interface RawType {
-    id: number;
-    name: string;
   }
 }

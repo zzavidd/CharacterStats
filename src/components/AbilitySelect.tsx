@@ -3,27 +3,49 @@ import {
   DialogContent,
   DialogTitle,
   MenuItem,
-  MenuList,
+  Paper,
   Stack,
   Typography,
 } from '@mui/material';
 import Fuse from 'fuse.js';
 import { bindDialog } from 'material-ui-popup-state';
 import Image from 'next/image';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
+import AutoSizer from 'react-virtualized-auto-sizer';
+import { VariableSizeList } from 'react-window';
 
 import AppIcon from 'src/utils/constants/icons';
 import { CharacterFormContext } from 'src/utils/contexts';
+import { getMenuItemSx } from 'src/utils/functions';
 
 import SearchField from './SearchField';
+
+const BASE_ROW_HEIGHT = 50;
 
 export default function AbilitySelect() {
   const [searchTerm, setSearchTerm] = useState('');
   const { abilities: allAbilities, abilitySelect } =
     useContext(CharacterFormContext);
-
   const abilities = useAbilitySieve(allAbilities, searchTerm);
+
+  const listRef = useRef<VariableSizeList<PokeAbility[]>>(null);
+
+  function onSearchChange(value: string) {
+    listRef.current?.resetAfterIndex(0);
+    setSearchTerm(value);
+  }
+
+  function getItemSize(i: number) {
+    const { description } = abilities[i];
+    let size = BASE_ROW_HEIGHT;
+    if (description) {
+      size += 20;
+    }
+    size += (Math.floor(description?.length / 60) || 0) * 25;
+    return size;
+  }
+
   return (
     <Dialog
       {...bindDialog(abilitySelect)}
@@ -32,25 +54,47 @@ export default function AbilitySelect() {
       keepMounted={true}>
       <DialogTitle>Select an ability</DialogTitle>
       <DialogContent sx={{ height: '100vh', p: 0 }} dividers={true}>
-        <SearchField
-          value={searchTerm}
-          onChange={(value) => setSearchTerm(value)}
-          placeholder={'Search for an ability...'}
-          fullWidth={true}
-          sx={{ p: 3 }}
-        />
-        <MenuList disablePadding={true}>
-          {abilities.map((ability) => (
-            <AbilityOption ability={ability} key={ability.id} />
-          ))}
-        </MenuList>
+        <Paper square={true}>
+          <SearchField
+            value={searchTerm}
+            onChange={onSearchChange}
+            placeholder={'Search for an ability...'}
+            fullWidth={true}
+            sx={{ p: 3 }}
+          />
+        </Paper>
+        <AutoSizer>
+          {({ height, width }) => (
+            <VariableSizeList
+              itemData={abilities}
+              itemCount={abilities.length}
+              itemKey={(i, data) => data[i].id}
+              itemSize={getItemSize}
+              estimatedItemSize={BASE_ROW_HEIGHT + 40}
+              overscanCount={30}
+              height={height}
+              width={width}
+              ref={listRef}>
+              {({ data, style, index }) => {
+                const ability = data[index];
+                return (
+                  <AbilityOption
+                    ability={ability}
+                    style={style}
+                    key={ability.id}
+                  />
+                );
+              }}
+            </VariableSizeList>
+          )}
+        </AutoSizer>
       </DialogContent>
     </Dialog>
   );
 }
 
 const AbilityOption = React.memo<AbilityOptionProps>(
-  ({ ability }) => {
+  ({ ability, style }) => {
     const { id, name, commonType, description } = ability;
     const { abilitySelect, useAbilityField } = useContext(CharacterFormContext);
     const { setValue } = useFormContext<CharacterInput>();
@@ -63,7 +107,12 @@ const AbilityOption = React.memo<AbilityOptionProps>(
     }
 
     return (
-      <MenuItem onClick={onSelect} value={id} sx={{ py: 2 }} key={id}>
+      <MenuItem
+        onClick={onSelect}
+        value={id}
+        style={style}
+        sx={getMenuItemSx(commonType)}
+        key={id}>
         <Stack direction={'row'} columnGap={3} alignItems={'flex-start'}>
           <Image
             src={AppIcon.Types[commonType]}
@@ -102,4 +151,5 @@ function useAbilitySieve(allAbilities: PokeAbilityMap, searchTerm: string) {
 
 interface AbilityOptionProps {
   ability: PokeAbility;
+  style: React.CSSProperties;
 }

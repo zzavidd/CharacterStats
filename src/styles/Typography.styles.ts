@@ -21,6 +21,9 @@ const typography: TypographyOptions = {
     fontWeight: 600,
     marginBottom: 4,
   },
+  h6: {
+    fontSize: 15,
+  },
 };
 
 export default typography;

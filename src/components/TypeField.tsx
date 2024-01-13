@@ -12,6 +12,7 @@ import {
   SvgIcon,
   Typography,
 } from '@mui/material';
+import { capitalCase } from 'change-case';
 import Image from 'next/image';
 import { Controller, useFormContext } from 'react-hook-form';
 
@@ -19,20 +20,25 @@ import { Type } from 'src/utils/constants/enums';
 import AppIcon from 'src/utils/constants/icons';
 
 export default function TypeField({ label, name }: TypeFieldProps) {
-  const { control, setValue } = useFormContext<CharacterInput>();
+  const { control, setValue, watch } = useFormContext<CharacterInput>();
+  const type = watch(name);
 
   return (
     <FormControl fullWidth={true}>
-      <InputLabel>{label}</InputLabel>
+      {type ? null : <InputLabel>{label}</InputLabel>}
       <Controller
         control={control}
         name={name}
         render={({ field: { value, ...field } }) => (
           <Select
             {...field}
-            label={label}
+            label={value ? '' : label}
             value={value || ''}
             IconComponent={value ? SvgIcon : undefined}
+            sx={{
+              backgroundColor: (t) =>
+                value ? t.palette.types[value].main : void 0,
+            }}
             endAdornment={
               value ? (
                 <InputAdornment position={'end'}>
@@ -55,7 +61,7 @@ export default function TypeField({ label, name }: TypeFieldProps) {
                   height={20}
                   width={20}
                 />
-                <Typography>{type}</Typography>
+                <Typography>{capitalCase(type)}</Typography>
               </Stack>
             )}>
             {Object.values(Type).map((type) => (
@@ -68,7 +74,7 @@ export default function TypeField({ label, name }: TypeFieldProps) {
                     width={20}
                   />
                 </ListItemIcon>
-                <ListItemText>{type}</ListItemText>
+                <ListItemText>{capitalCase(type)}</ListItemText>
               </MenuItem>
             ))}
           </Select>

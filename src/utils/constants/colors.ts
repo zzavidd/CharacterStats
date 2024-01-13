@@ -28,6 +28,7 @@ export const COLOR_TYPE = {
   [Type.ROCK]: '#786824',
   [Type.STEEL]: '#787887',
   [Type.WATER]: '#445E9C',
+  [Type.SHADOW]: '#49392F',
   [Type.UNKNOWN]: '#68a090',
 };
 

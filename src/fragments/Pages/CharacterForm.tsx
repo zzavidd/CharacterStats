@@ -13,17 +13,24 @@ import {
 } from '@mui/material';
 import { usePopupState } from 'material-ui-popup-state/hooks';
 import { useState } from 'react';
-import { FormProvider, useForm, useFormContext } from 'react-hook-form';
+import {
+  FormProvider,
+  useFieldArray,
+  useForm,
+  useFormContext,
+} from 'react-hook-form';
 
 import AbilityField from 'src/components/AbilityField';
 import AbilitySelect from 'src/components/AbilitySelect';
+import LearnsetBlock from 'src/components/LearnsetBlock';
+import MoveSelect from 'src/components/MoveSelect';
 import TypeField from 'src/components/TypeField';
 import { DEFAULT_STATS, StatMap } from 'src/utils/constants/defaults';
 import { Stat, Universe } from 'src/utils/constants/enums';
 import { CharacterFormContext } from 'src/utils/contexts';
 import { zCharacterInput } from 'src/utils/validators';
 
-export function CharacterAddForm({ abilities }: CharacterFormProps) {
+export function CharacterAddForm({ abilities, moves }: CharacterFormProps) {
   const useAbilityField = useState<AbilityKey | null>(null);
   const formMethods = useForm<CharacterInput>({
     resolver: zodResolver(zCharacterInput),
@@ -35,16 +42,28 @@ export function CharacterAddForm({ abilities }: CharacterFormProps) {
       ability1: undefined,
       ability2: undefined,
       abilityX: undefined,
-      learnset: {},
+      learnset: [],
       stats: DEFAULT_STATS,
     },
   });
+  const learnsetMethods = useFieldArray({
+    control: formMethods.control,
+    name: 'learnset',
+  });
   const abilitySelect = usePopupState({ variant: 'dialog' });
+  const moveSelect = usePopupState({ variant: 'dialog' });
 
   return (
     <Container maxWidth={'xs'}>
       <CharacterFormContext.Provider
-        value={{ abilities, abilitySelect, useAbilityField }}>
+        value={{
+          abilities,
+          abilitySelect,
+          useAbilityField,
+          moves,
+          moveSelect,
+          learnsetMethods,
+        }}>
         <FormProvider {...formMethods}>
           <form onSubmit={() => {}}>
             <Stack p={4}>
@@ -101,7 +120,9 @@ function CharacterForm() {
           />
         ))}
       </Stack>
+      <LearnsetBlock />
       <AbilitySelect />
+      <MoveSelect />
     </Stack>
   );
 }
