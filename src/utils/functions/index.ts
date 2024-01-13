@@ -1,10 +1,11 @@
 import { SxProps, Theme, alpha } from '@mui/material';
 import Papa from 'papaparse';
 import { z } from 'zod';
-import { Type } from '../constants/enums';
+import { PokeType } from '../constants/enums';
 
 export { default as getAbilities } from './abilities';
 export { default as getMoves } from './moves';
+export { default as getTypes } from './types';
 
 export function calculateBST(stats: Stats): number {
   return Object.values(stats).reduce((bst, value: unknown) => {
@@ -28,7 +29,7 @@ export async function getSource<T extends {}>(
   return data.map((d) => validator.parse(d));
 }
 
-export function getMenuItemSx(type: Type): SxProps<Theme> {
+export function getMenuItemSx(type: PokeType): SxProps<Theme> {
   return {
     'backgroundColor': (t) => alpha(t.palette.types[type].dark, 0.8),
     '&:hover': {

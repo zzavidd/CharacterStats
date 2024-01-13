@@ -15,7 +15,7 @@ import {
 } from 'redux-persist';
 import localStorage from 'redux-persist/lib/storage';
 
-import { Type, Universe } from '../constants/enums';
+import { PokeType, Universe } from '../constants/enums';
 
 import * as reducers from './actions';
 
@@ -58,7 +58,7 @@ export const useAppSelector: TypedUseSelectorHook<AppState> = useSelector;
 
 export interface AppState {
   filters: {
-    type: Type[];
+    type: PokeType[];
     universe: Universe[];
   };
   sort: {

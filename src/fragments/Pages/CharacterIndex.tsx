@@ -18,6 +18,7 @@ import CharacterSieveForm, { SIEVE_FORM_WIDTH } from './CharacterSieveForm';
 export default function CharacterIndex({
   characters: allCharacters,
   abilities,
+  types,
 }: CharacterIndexProps) {
   const useDrawer = useState(false);
   const useSearchTerm = useState('');
@@ -30,7 +31,7 @@ export default function CharacterIndex({
   const columnBase = isDrawerOpen ? 0 : 1;
   return (
     <CharacterContext.Provider
-      value={{ abilities, moves: {}, useDrawer, useSearchTerm }}>
+      value={{ abilities, moves: {}, types, useDrawer, useSearchTerm }}>
       <Stack
         direction={'row'}
         pr={isDrawerOpen ? SIEVE_FORM_WIDTH : 0}
@@ -96,9 +97,9 @@ function CharacterControls() {
 }
 
 function useCharacterSieve(
-  allCharacters: Character[],
+  allCharacters: (Character | CharacterWithErrors)[],
   searchTerm: string,
-): Character[] {
+): (Character | CharacterWithErrors)[] {
   const filters = useAppSelector((s) => s.filters);
   const propertyIndex = useAppSelector((s) => s.sort.property);
   const order = useAppSelector((s) => s.sort.order);
@@ -108,15 +109,13 @@ function useCharacterSieve(
   let characters = allCharacters;
 
   if (filters.type.length) {
-    characters = characters.filter(
-      (c) =>
-        filters.type.includes(c.type1) ||
-        (c.type2 && filters.type.includes(c.type2)),
-    );
+    characters = characters
+      .filter((c) => 'type1' in c && filters.type.includes(c.type1))
+      .filter((c) => 'type2' in c && c.type2 && filters.type.includes(c.type2));
   }
   if (filters.universe.length) {
-    characters = characters.filter((c) =>
-      filters.universe.includes(c.universe),
+    characters = characters.filter(
+      (c) => 'universe' in c && filters.universe.includes(c.universe),
     );
   }
 
@@ -135,6 +134,7 @@ function useCharacterSieve(
 }
 
 interface CharacterIndexProps {
-  characters: Character[];
-  abilities: Record<string, PokeAbility>;
+  characters: (Character | CharacterWithErrors)[];
+  abilities: PokeAbilityMap;
+  types: PokeTypeMap;
 }

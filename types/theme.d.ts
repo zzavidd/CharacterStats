@@ -1,6 +1,6 @@
 import { PaletteColor, PaletteColorOptions } from '@mui/material/styles';
 
-import { Type } from 'src/utils/constants/enums';
+import { PokeType } from 'src/utils/constants/enums';
 
 declare module '@mui/material/styles' {
   interface BreakpointOverrides {
@@ -8,9 +8,9 @@ declare module '@mui/material/styles' {
   }
 
   interface Palette {
-    types: Record<`${Type}`, PaletteColor>;
+    types: Record<`${PokeType}`, PaletteColor>;
   }
   interface PaletteOptions {
-    types?: Record<`${Type}`, PaletteColorOptions>;
+    types?: Record<`${PokeType}`, PaletteColorOptions>;
   }
 }

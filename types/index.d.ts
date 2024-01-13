@@ -1,11 +1,17 @@
 import type { Dispatch, SetStateAction } from 'react';
 import type { z } from 'zod';
 
-import type { DamageClass, Type } from 'src/utils/constants/enums';
-import type { zCharacter, zCharacterInput, zStats } from 'src/utils/validators';
+import type { DamageClass, PokeType } from 'src/utils/constants/enums';
+import type {
+  zCharacter,
+  zCharacterInput,
+  zCharacterWithErrors,
+  zStats,
+} from 'src/utils/validators';
 
 declare global {
   export type Character = z.infer<typeof zCharacter>;
+  export type CharacterWithErrors = z.infer<typeof zCharacterWithErrors>;
   export type CharacterInput = z.infer<typeof zCharacterInput>;
   export type Stats = z.infer<typeof zStats>;
 
@@ -17,6 +23,7 @@ declare global {
 
   export type PokeAbilityMap = Record<number, PokeAbility>;
   export type PokeMoveMap = Record<number, PokeMove>;
+  export type PokeTypeMap = Record<PokeType, string>;
 
   export interface PokeMove {
     id: number;
@@ -25,7 +32,7 @@ declare global {
     power: number | null;
     pp: number | null;
     accuracy: number | null;
-    type: Type;
+    type: PokeType;
     damageClass: DamageClass;
     generation: number;
   }
@@ -35,6 +42,6 @@ declare global {
     name: string;
     generation: number;
     description: string;
-    commonType: Type;
+    commonType: PokeType;
   }
 }

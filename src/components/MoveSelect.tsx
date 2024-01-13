@@ -16,6 +16,7 @@ import React, { useContext, useRef, useState } from 'react';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { ListChildComponentProps, VariableSizeList } from 'react-window';
 
+import { TypeName } from 'src/utils/constants/enums';
 import AppIcon from 'src/utils/constants/icons';
 import { CharacterFormContext } from 'src/utils/contexts';
 import { getMenuItemSx } from 'src/utils/functions';
@@ -112,7 +113,7 @@ const MoveOption = React.memo<MoveOptionProps>(({ move, style }) => {
         <Box mt={'2px'}>
           <Image
             src={AppIcon.Types[move.type]}
-            alt={move.type}
+            alt={TypeName[move.type]}
             height={24}
             width={24}
           />

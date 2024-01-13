@@ -12,14 +12,16 @@ import {
   SvgIcon,
   Typography,
 } from '@mui/material';
-import { capitalCase } from 'change-case';
 import Image from 'next/image';
+import { useContext } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
-import { Type } from 'src/utils/constants/enums';
+import { PokeType, TypeName } from 'src/utils/constants/enums';
 import AppIcon from 'src/utils/constants/icons';
+import { CharacterContext } from 'src/utils/contexts';
 
 export default function TypeField({ label, name }: TypeFieldProps) {
+  const { types } = useContext(CharacterContext);
   const { control, setValue, watch } = useFormContext<CharacterInput>();
   const type = watch(name);
 
@@ -57,26 +59,29 @@ export default function TypeField({ label, name }: TypeFieldProps) {
               <Stack direction={'row'} alignItems={'center'} columnGap={2}>
                 <Image
                   src={type ? AppIcon.Types[type] : ''}
-                  alt={type}
+                  alt={TypeName[type]}
                   height={20}
                   width={20}
                 />
-                <Typography>{capitalCase(type)}</Typography>
+                <Typography>{TypeName[type]}</Typography>
               </Stack>
             )}>
-            {Object.values(Type).map((type) => (
-              <MenuItem value={type} key={type}>
-                <ListItemIcon sx={{ minWidth: 0 }}>
-                  <Image
-                    src={AppIcon.Types[type]}
-                    alt={type}
-                    height={20}
-                    width={20}
-                  />
-                </ListItemIcon>
-                <ListItemText>{capitalCase(type)}</ListItemText>
-              </MenuItem>
-            ))}
+            {Object.keys(types).map((type) => {
+              const typeId = parseInt(type) as PokeType;
+              return (
+                <MenuItem value={typeId} key={typeId}>
+                  <ListItemIcon sx={{ minWidth: 0 }}>
+                    <Image
+                      src={AppIcon.Types[typeId]}
+                      alt={TypeName[typeId]}
+                      height={20}
+                      width={20}
+                    />
+                  </ListItemIcon>
+                  <ListItemText>{TypeName[typeId]}</ListItemText>
+                </MenuItem>
+              );
+            })}
           </Select>
         )}
       />

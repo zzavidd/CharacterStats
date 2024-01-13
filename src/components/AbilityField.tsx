@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { useContext } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
+import { TypeName } from 'src/utils/constants/enums';
 import AppIcon from 'src/utils/constants/icons';
 import { CharacterFormContext } from 'src/utils/contexts';
 
@@ -33,7 +34,7 @@ export default function AbilityField({ name, label }: AbilityFieldProps) {
               <InputAdornment position={'start'}>
                 <Image
                   src={AppIcon.Types[abilities[value].commonType]}
-                  alt={abilities[value].commonType}
+                  alt={TypeName[abilities[value].commonType]}
                   height={20}
                   width={20}
                 />

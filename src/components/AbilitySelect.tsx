@@ -15,6 +15,7 @@ import { useFormContext } from 'react-hook-form';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { VariableSizeList } from 'react-window';
 
+import { TypeName } from 'src/utils/constants/enums';
 import AppIcon from 'src/utils/constants/icons';
 import { CharacterFormContext } from 'src/utils/contexts';
 import { getMenuItemSx } from 'src/utils/functions';
@@ -116,7 +117,7 @@ const AbilityOption = React.memo<AbilityOptionProps>(
         <Stack direction={'row'} columnGap={3} alignItems={'flex-start'}>
           <Image
             src={AppIcon.Types[commonType]}
-            alt={commonType}
+            alt={TypeName[commonType]}
             height={20}
             width={20}
           />

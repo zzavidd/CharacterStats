@@ -1,32 +1,24 @@
 import { capitalCase } from 'change-case';
 import { getSource } from '.';
-import { Type } from '../constants/enums';
+import { PokeType } from '../constants/enums';
 import {
   V2_ABILITIES,
   V2_ABILITIES_BY_POKEMON,
   V2_ABILITY_FLAVOR_TEXTS,
-  V2_TYPES,
   V2_TYPES_BY_POKEMON,
   zAbilitiesResponse,
   zAbilityFlavorTextsResponse,
   zPokemonAbilitiesResponse,
   zPokemonTypesResponse,
-  zTypesResponse,
 } from '../constants/sources';
 
 export default async function getAbilities(): Promise<PokeAbilityMap> {
-  const [v2a, v2b, v2c, v2d, v2e] = await Promise.all([
+  const [v2a, v2b, v2c, v2d] = await Promise.all([
     getSource(V2_ABILITIES, zAbilitiesResponse),
     getSource(V2_ABILITY_FLAVOR_TEXTS, zAbilityFlavorTextsResponse),
     getSource(V2_ABILITIES_BY_POKEMON, zPokemonAbilitiesResponse),
     getSource(V2_TYPES_BY_POKEMON, zPokemonTypesResponse),
-    getSource(V2_TYPES, zTypesResponse),
   ]);
-
-  const types = v2e.reduce<Record<number, Type>>(
-    (acc, a) => ({ ...acc, [a.id]: a.identifier }),
-    {},
-  );
 
   const typePerPokemon = v2d.reduce<Record<number, number[]>>(
     (acc, a) => ({
@@ -75,7 +67,7 @@ export default async function getAbilities(): Promise<PokeAbilityMap> {
           name: capitalCase(a.identifier),
           generation: a.generation_id,
           description: abilityDescriptions[a.id],
-          commonType: commonTypeId ? types[commonTypeId] : Type.UNKNOWN,
+          commonType: commonTypeId || PokeType.UNKNOWN,
         },
       };
     }, {});

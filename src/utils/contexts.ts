@@ -11,7 +11,8 @@ export const CharacterFormContext = React.createContext(
 
 export interface CharacterContextProps {
   abilities: PokeAbilityMap;
-  moves: Record<number, PokeMove>;
+  moves: PokeMoveMap;
+  types: PokeTypeMap;
   useDrawer: ReactUseState<boolean>;
   useSearchTerm: ReactUseState<string>;
 }

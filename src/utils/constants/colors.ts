@@ -1,4 +1,4 @@
-import { Generation, Stat, Type } from './enums';
+import { Generation, PokeType, Stat } from './enums';
 
 export const STAT = {
   [Stat.HP]: '#A60000',
@@ -10,26 +10,26 @@ export const STAT = {
 };
 
 export const COLOR_TYPE = {
-  [Type.BUG]: '#6D7815',
-  [Type.DARK]: '#49392F',
-  [Type.DRAGON]: '#4924A1',
-  [Type.ELECTRIC]: '#A1871F',
-  [Type.FAIRY]: '#9B6470',
-  [Type.FIGHTING]: '#7D1F1A',
-  [Type.FIRE]: '#9C531F',
-  [Type.FLYING]: '#6D5E9C',
-  [Type.GHOST]: '#493963',
-  [Type.GRASS]: '#4E8234',
-  [Type.GROUND]: '#927D44',
-  [Type.ICE]: '#638D8D',
-  [Type.NORMAL]: '#6d5f4e',
-  [Type.POISON]: '#682A68',
-  [Type.PSYCHIC]: '#A13959',
-  [Type.ROCK]: '#786824',
-  [Type.STEEL]: '#787887',
-  [Type.WATER]: '#445E9C',
-  [Type.SHADOW]: '#49392F',
-  [Type.UNKNOWN]: '#68a090',
+  [PokeType.BUG]: '#6D7815',
+  [PokeType.DARK]: '#49392F',
+  [PokeType.DRAGON]: '#4924A1',
+  [PokeType.ELECTRIC]: '#A1871F',
+  [PokeType.FAIRY]: '#9B6470',
+  [PokeType.FIGHTING]: '#7D1F1A',
+  [PokeType.FIRE]: '#9C531F',
+  [PokeType.FLYING]: '#6D5E9C',
+  [PokeType.GHOST]: '#493963',
+  [PokeType.GRASS]: '#4E8234',
+  [PokeType.GROUND]: '#927D44',
+  [PokeType.ICE]: '#638D8D',
+  [PokeType.NORMAL]: '#6d5f4e',
+  [PokeType.POISON]: '#682A68',
+  [PokeType.PSYCHIC]: '#A13959',
+  [PokeType.ROCK]: '#786824',
+  [PokeType.STEEL]: '#787887',
+  [PokeType.WATER]: '#445E9C',
+  [PokeType.SHADOW]: '#49392F',
+  [PokeType.UNKNOWN]: '#68a090',
 };
 
 export const GENERATION = {

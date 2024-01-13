@@ -20,7 +20,7 @@ import Rock from 'src/assets/icons/types/Rock.png';
 import Steel from 'src/assets/icons/types/Steel.png';
 import Water from 'src/assets/icons/types/Water.png';
 
-import { DamageClass, Type } from './enums';
+import { DamageClass, PokeType } from './enums';
 
 const AppIcon = <const>{
   Classes: {
@@ -29,26 +29,26 @@ const AppIcon = <const>{
     [DamageClass.STATUS]: Status,
   },
   Types: {
-    [Type.BUG]: Bug,
-    [Type.DARK]: Dark,
-    [Type.DRAGON]: Dragon,
-    [Type.ELECTRIC]: Electric,
-    [Type.FAIRY]: Fairy,
-    [Type.FIGHTING]: Fighting,
-    [Type.FIRE]: Fire,
-    [Type.FLYING]: Flying,
-    [Type.GHOST]: Ghost,
-    [Type.GRASS]: Grass,
-    [Type.GROUND]: Ground,
-    [Type.ICE]: Ice,
-    [Type.NORMAL]: Normal,
-    [Type.POISON]: Poison,
-    [Type.PSYCHIC]: Psychic,
-    [Type.ROCK]: Rock,
-    [Type.STEEL]: Steel,
-    [Type.WATER]: Water,
-    [Type.UNKNOWN]: Normal,
-    [Type.SHADOW]: Dark,
+    [PokeType.BUG]: Bug,
+    [PokeType.DARK]: Dark,
+    [PokeType.DRAGON]: Dragon,
+    [PokeType.ELECTRIC]: Electric,
+    [PokeType.FAIRY]: Fairy,
+    [PokeType.FIGHTING]: Fighting,
+    [PokeType.FIRE]: Fire,
+    [PokeType.FLYING]: Flying,
+    [PokeType.GHOST]: Ghost,
+    [PokeType.GRASS]: Grass,
+    [PokeType.GROUND]: Ground,
+    [PokeType.ICE]: Ice,
+    [PokeType.NORMAL]: Normal,
+    [PokeType.POISON]: Poison,
+    [PokeType.PSYCHIC]: Psychic,
+    [PokeType.ROCK]: Rock,
+    [PokeType.STEEL]: Steel,
+    [PokeType.WATER]: Water,
+    [PokeType.UNKNOWN]: Normal,
+    [PokeType.SHADOW]: Dark,
   },
 };
 

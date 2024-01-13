@@ -18,7 +18,8 @@ export default function LearnsetBlock() {
       <Button
         variant={'contained'}
         onClick={() => moveSelect.open()}
-        startIcon={<Add />}>
+        startIcon={<Add />}
+        sx={{ py: 3 }}>
         Add Move
       </Button>
       <Stack rowGap={2}>

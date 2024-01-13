@@ -1,6 +1,6 @@
 import { capitalCase } from 'change-case';
 import { getSource } from '.';
-import { DamageClass, Type } from '../constants/enums';
+import { DamageClass, PokeType } from '../constants/enums';
 import {
   V2_MOVES,
   V2_MOVE_DAMAGE_CLASSES,
@@ -20,9 +20,9 @@ export default async function getMoves(): Promise<PokeMoveMap> {
     getSource(V2_TYPES, zTypesResponse),
   ]);
 
-  const types = v2d.reduce<Record<number, Type>>(
-    (acc, a) => ({ ...acc, [a.id]: a.identifier }),
-    {},
+  const types = v2d.reduce(
+    (acc, a) => ({ ...acc, [a.id]: capitalCase(a.identifier) }),
+    {} as Record<PokeType, string>,
   );
 
   const moveDescriptions = [
@@ -47,8 +47,7 @@ export default async function getMoves(): Promise<PokeMoveMap> {
   );
 
   const moves = v2a.reduce<PokeMoveMap>((acc, m) => {
-    const type = types[m.type_id];
-    if (type === Type.SHADOW) return acc;
+    if (m.type_id === PokeType.SHADOW) return acc;
     return {
       ...acc,
       [m.id]: {
@@ -56,7 +55,7 @@ export default async function getMoves(): Promise<PokeMoveMap> {
         name: capitalCase(m.identifier),
         generation: m.generation_id,
         description: moveDescriptions[m.id],
-        type,
+        type: m.type_id,
         power: m.power,
         pp: m.pp,
         accuracy: m.accuracy,

@@ -3,18 +3,18 @@ import { indigo } from '@mui/material/colors';
 import createPalette from '@mui/material/styles/createPalette';
 
 import { COLOR_TYPE } from 'src/utils/constants/colors';
-import { Type } from 'src/utils/constants/enums';
+import { PokeType } from 'src/utils/constants/enums';
 
-const typePalette = Object.values(Type).reduce(
-  (acc, type) => {
+const typePalette = Object.entries(COLOR_TYPE).reduce(
+  (acc, [typeId, color]) => {
     return {
       ...acc,
-      [type]: createPalette({ contrastThreshold: 4.4 }).augmentColor({
-        color: { main: COLOR_TYPE[type] },
+      [typeId]: createPalette({ contrastThreshold: 4.4 }).augmentColor({
+        color: { main: color },
       }),
     };
   },
-  {} as Record<`${Type}`, PaletteColor>,
+  {} as Record<`${PokeType}`, PaletteColor>,
 );
 
 export const palette: PaletteOptions = {

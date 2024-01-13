@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { DamageClass, Type } from './enums';
+import { DamageClass, PokeType } from './enums';
 
 const BASE_URL =
   'https://raw.githubusercontent.com/PokeAPI/pokeapi/master/data/v2/csv';
@@ -62,6 +62,6 @@ export const zPokemonTypesResponse = z.object({
 });
 
 export const zTypesResponse = z.object({
-  id: z.number(),
-  identifier: z.nativeEnum(Type),
+  id: z.nativeEnum(PokeType),
+  identifier: z.string(),
 });
