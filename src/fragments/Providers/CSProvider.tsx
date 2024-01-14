@@ -1,7 +1,5 @@
 'use client';
 
-import { Session } from 'next-auth';
-import { SessionProvider } from 'next-auth/react';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 
@@ -10,20 +8,14 @@ import { persistor, store } from 'src/utils/reducers';
 import SnackbarManager from './SnackbarManager';
 import ThemeManager from './ThemeManager';
 
-export default function CSProvider({ children, session }: CSProviderProps) {
+export default function CSProvider({ children }: React.PropsWithChildren) {
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <SessionProvider session={session}>
-          <ThemeManager>
-            <SnackbarManager>{children}</SnackbarManager>
-          </ThemeManager>
-        </SessionProvider>
+        <ThemeManager>
+          <SnackbarManager>{children}</SnackbarManager>
+        </ThemeManager>
       </PersistGate>
     </Provider>
   );
-}
-
-interface CSProviderProps extends React.PropsWithChildren {
-  session: Session | null;
 }
