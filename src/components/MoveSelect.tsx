@@ -90,11 +90,10 @@ export default function MoveSelect() {
 
 const MoveOption = React.memo<MoveOptionProps>(({ move, style }) => {
   const { learnsetMethods, moveSelect } = useContext(CharacterFormContext);
-
-  const { append } = learnsetMethods;
+  const { prepend } = learnsetMethods;
 
   function onSelect() {
-    append({ level: 0, moveId: move.id });
+    prepend({ level: 0, moveId: move.id });
     moveSelect.close();
   }
 

@@ -5,6 +5,9 @@ import { UseFieldArrayReturn } from 'react-hook-form';
 export const CharacterContext = React.createContext(
   {} as CharacterContextProps,
 );
+export const CharacterEntryContext = React.createContext(
+  {} as CharacterEntryContextProps,
+);
 export const CharacterFormContext = React.createContext(
   {} as CharacterFormContextProps,
 );
@@ -15,6 +18,12 @@ export interface CharacterContextProps {
   types: PokeTypeMap;
   useDrawer: ReactUseState<boolean>;
   useSearchTerm: ReactUseState<string>;
+}
+
+export interface CharacterEntryContextProps {
+  character: Character;
+  characterDeleteDialog: PopupState;
+  characterMenu: PopupState;
 }
 
 export interface CharacterFormContextProps extends CharacterFormProps {

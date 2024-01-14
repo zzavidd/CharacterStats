@@ -1,6 +1,9 @@
 import { initializeApp } from 'firebase/app';
-import type { FirestoreDataConverter } from 'firebase/firestore';
-import { collection, getFirestore } from 'firebase/firestore';
+import type {
+  DocumentReference,
+  FirestoreDataConverter,
+} from 'firebase/firestore';
+import { collection, doc, getFirestore } from 'firebase/firestore';
 
 import { zCharacter, zCharacterWithErrors } from 'src/utils/validators';
 
@@ -15,7 +18,9 @@ const app = initializeApp({
 const firestore = getFirestore(app);
 export default firestore;
 
-const converter: FirestoreDataConverter<Character | CharacterWithErrors> = {
+const collectionConverter: FirestoreDataConverter<
+  Character | CharacterWithErrors
+> = {
   toFirestore: (character) => ({ ...character }),
   fromFirestore: (snapshot) => {
     const character = snapshot.data();
@@ -31,8 +36,19 @@ const converter: FirestoreDataConverter<Character | CharacterWithErrors> = {
     }
   },
 };
+const documentConverter: FirestoreDataConverter<Character> = {
+  toFirestore: (character) => ({ ...character }),
+  fromFirestore: (snapshot) => {
+    const character = snapshot.data();
+    return zCharacter.parse({ ...character, id: snapshot.id });
+  },
+};
 
 export const characterCollectionRef = collection(
   firestore,
   'characters',
-).withConverter(converter);
+).withConverter(collectionConverter);
+
+export function characterDocumentRef(id: string): DocumentReference<Character> {
+  return doc(firestore, 'characters', id).withConverter(documentConverter);
+}

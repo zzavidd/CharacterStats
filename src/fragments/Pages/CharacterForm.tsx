@@ -14,6 +14,7 @@ import {
 import { usePopupState } from 'material-ui-popup-state/hooks';
 import { useState } from 'react';
 import {
+  Controller,
   FormProvider,
   useFieldArray,
   useForm,
@@ -30,7 +31,11 @@ import { Stat, Universe } from 'src/utils/constants/enums';
 import { CharacterFormContext } from 'src/utils/contexts';
 import { zCharacterInput } from 'src/utils/validators';
 
-export function CharacterAddForm({ abilities, moves }: CharacterFormProps) {
+export function CharacterAddForm({
+  abilities,
+  moves,
+  types,
+}: CharacterFormProps) {
   const useAbilityField = useState<AbilityKey | null>(null);
   const formMethods = useForm<CharacterInput>({
     resolver: zodResolver(zCharacterInput),
@@ -62,6 +67,7 @@ export function CharacterAddForm({ abilities, moves }: CharacterFormProps) {
           useAbilityField,
           moves,
           moveSelect,
+          types,
           learnsetMethods,
         }}>
         <FormProvider {...formMethods}>
@@ -77,8 +83,59 @@ export function CharacterAddForm({ abilities, moves }: CharacterFormProps) {
   );
 }
 
+export function CharacterEditForm({
+  character: c,
+  abilities,
+  moves,
+  types,
+}: CharacterEditFormProps) {
+  const useAbilityField = useState<AbilityKey | null>(null);
+  const formMethods = useForm<CharacterInput>({
+    resolver: zodResolver(zCharacterInput),
+    values: {
+      ...c,
+      learnset:
+        'learnset' in c
+          ? Object.entries(c.learnset).flatMap(([level, moveIds]) =>
+              moveIds.map((moveId) => ({ level: Number(level), moveId })),
+            )
+          : [],
+    },
+  });
+  const learnsetMethods = useFieldArray({
+    control: formMethods.control,
+    name: 'learnset',
+  });
+  const abilitySelect = usePopupState({ variant: 'dialog' });
+  const moveSelect = usePopupState({ variant: 'dialog' });
+
+  return (
+    <Container maxWidth={'xs'}>
+      <CharacterFormContext.Provider
+        value={{
+          abilities,
+          abilitySelect,
+          useAbilityField,
+          moves,
+          moveSelect,
+          types,
+          learnsetMethods,
+        }}>
+        <FormProvider {...formMethods}>
+          <form onSubmit={() => {}}>
+            <Stack p={4}>
+              <Typography variant={'h1'}>Edit Character</Typography>
+              <CharacterForm />
+            </Stack>
+          </form>
+        </FormProvider>
+      </CharacterFormContext.Provider>
+    </Container>
+  );
+}
+
 function CharacterForm() {
-  const { register } = useFormContext<CharacterInput>();
+  const { control, register } = useFormContext<CharacterInput>();
   return (
     <Stack rowGap={4}>
       <TextField
@@ -88,14 +145,22 @@ function CharacterForm() {
       />
       <FormControl>
         <InputLabel>Universe:</InputLabel>
-        <Select {...register('universe')} label={'Universe:'}>
-          <MenuItem>None</MenuItem>
-          {Object.values(Universe).map((universe) => (
-            <MenuItem value={universe} key={universe}>
-              {universe}
-            </MenuItem>
-          ))}
-        </Select>
+        <Controller
+          control={control}
+          name={'universe'}
+          render={({ field }) => {
+            return (
+              <Select {...field} label={'Universe:'} fullWidth={true}>
+                <MenuItem>None</MenuItem>
+                {Object.values(Universe).map((universe) => (
+                  <MenuItem value={universe} key={universe}>
+                    {universe}
+                  </MenuItem>
+                ))}
+              </Select>
+            );
+          }}
+        />
       </FormControl>
       <Stack direction={'row'} columnGap={2}>
         <TypeField name={'type1'} label={'Type 1:'} />
@@ -125,4 +190,8 @@ function CharacterForm() {
       <MoveSelect />
     </Stack>
   );
+}
+
+interface CharacterEditFormProps extends CharacterFormProps {
+  character: Character;
 }

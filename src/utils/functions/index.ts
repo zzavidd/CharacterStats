@@ -1,7 +1,8 @@
-import { SxProps, Theme, alpha } from '@mui/material';
+import { SxProps, Theme, alpha, useTheme } from '@mui/material';
 import Papa from 'papaparse';
+import { useFormContext } from 'react-hook-form';
 import { z } from 'zod';
-import { PokeType } from '../constants/enums';
+import { PokeType, TypeName } from '../constants/enums';
 
 export { default as getAbilities } from './abilities';
 export { default as getMoves } from './moves';
@@ -31,9 +32,22 @@ export async function getSource<T extends {}>(
 
 export function getMenuItemSx(type: PokeType): SxProps<Theme> {
   return {
-    'backgroundColor': (t) => alpha(t.palette.types[type].dark, 0.8),
+    'backgroundColor': (t) => alpha(t.palette[TypeName[type]].dark, 0.8),
     '&:hover': {
-      backgroundColor: (t) => t.palette.types[type].main,
+      backgroundColor: (t) => t.palette[TypeName[type]].main,
     },
+  };
+}
+
+export function useTypeColorToken(): {
+  token?: (typeof TypeName)[keyof typeof TypeName];
+  color?: string;
+} {
+  const { watch } = useFormContext<CharacterInput>();
+  const { type1 } = watch();
+  const t = useTheme();
+  return {
+    token: type1 ? TypeName[type1] : undefined,
+    color: type1 ? t.palette[TypeName[type1]].main : undefined,
   };
 }

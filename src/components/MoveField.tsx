@@ -1,76 +1,68 @@
 import { Close } from '@mui/icons-material';
-import {
-  BaseTextFieldProps,
-  IconButton,
-  InputAdornment,
-  Stack,
-  TextField,
-} from '@mui/material';
+import { ButtonBase, IconButton, Stack, Typography } from '@mui/material';
 import Image from 'next/image';
 import { useContext } from 'react';
-import { Controller, useFormContext } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 
 import { COLOR_TYPE } from 'src/utils/constants/colors';
 import { TypeName } from 'src/utils/constants/enums';
 import AppIcon from 'src/utils/constants/icons';
 import { CharacterFormContext } from 'src/utils/contexts';
 
-export default function MoveField({ index, name }: MoveFieldProps) {
+export default function MoveField({ index }: MoveFieldProps) {
   const { learnsetMethods, moves, moveSelect } =
     useContext(CharacterFormContext);
-  const { control } = useFormContext<CharacterInput>();
+  const { watch } = useFormContext<CharacterInput>();
 
   const { remove } = learnsetMethods;
+  const value = watch(`learnset.${index}.moveId`);
 
   return (
-    <Stack direction={'row'}>
-      <Controller
-        name={name}
-        control={control}
-        render={({ field: { value, ...field } }) => {
-          return (
-            <TextField
-              {...field}
-              value={value ? moves[value].name : ''}
-              placeholder={'Select a move'}
-              onClick={() => {
-                moveSelect.open();
-              }}
-              fullWidth={true}
-              InputProps={{
-                readOnly: true,
-                sx: { backgroundColor: COLOR_TYPE[moves[value].type] },
-                startAdornment: value ? (
-                  <InputAdornment position={'start'}>
-                    <Image
-                      src={AppIcon.Types[moves[value].type]}
-                      alt={TypeName[moves[value].type]}
-                      height={20}
-                      width={20}
-                    />
-                  </InputAdornment>
-                ) : null,
-                endAdornment: value ? (
-                  <InputAdornment position={'end'}>
-                    <IconButton
-                      onClick={(e) => {
-                        remove(index);
-                        e.stopPropagation();
-                      }}>
-                      <Close />
-                    </IconButton>
-                  </InputAdornment>
-                ) : null,
-              }}
+    <Stack direction={'row'} alignItems={'center'} width={'100%'}>
+      <ButtonBase
+        onClick={() => moveSelect.open()}
+        sx={{
+          borderRadius: 1,
+          height: '100%',
+          width: '100%',
+          overflow: 'hidden',
+        }}>
+        <Stack
+          direction={'row'}
+          alignItems={'center'}
+          height={'100%'}
+          width={'100%'}
+          p={3}
+          justifyContent={'space-between'}
+          sx={{ backgroundColor: COLOR_TYPE[moves[value].type] }}>
+          <Stack direction={'row'} columnGap={2}>
+            <Image
+              src={AppIcon.Types[moves[value].type]}
+              alt={TypeName[moves[value].type]}
+              height={20}
+              width={20}
             />
-          );
-        }}
-      />
+            <Typography>{moves[value].name}</Typography>
+          </Stack>
+          <Image
+            src={AppIcon.Classes[moves[value].damageClass]}
+            alt={moves[value].damageClass}
+            height={18}
+            width={25}
+          />
+        </Stack>
+      </ButtonBase>
+      <IconButton
+        onClick={(e) => {
+          remove(index);
+          e.stopPropagation();
+        }}>
+        <Close />
+      </IconButton>
     </Stack>
   );
 }
 
-interface MoveFieldProps extends BaseTextFieldProps {
-  name: `learnset.${number}.moveId`;
+interface MoveFieldProps {
   index: number;
 }
