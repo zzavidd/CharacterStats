@@ -1,8 +1,11 @@
-import { getDoc } from 'firebase/firestore';
+import { getDoc, getDocs } from 'firebase/firestore';
 import { notFound } from 'next/navigation';
 import CharacterEditForm from 'src/fragments/Pages/CharacterEditForm';
 
-import { characterDocumentRef } from 'src/utils/client/firebase';
+import {
+  characterCollectionRef,
+  characterDocumentRef,
+} from 'src/utils/client/firebase';
 import { getAbilities, getMoves, getTypes } from 'src/utils/functions';
 
 export default async function EditPage({ params: { id } }: EditPageContext) {
@@ -23,6 +26,11 @@ export default async function EditPage({ params: { id } }: EditPageContext) {
       types={types}
     />
   );
+}
+
+export async function generateStaticParams() {
+  const query = await getDocs(characterCollectionRef);
+  return query.docs.map((doc) => ({ id: doc.id }));
 }
 
 interface EditPageContext {

@@ -10,7 +10,7 @@ import { useState } from 'react';
 import { FormProvider, useFieldArray, useForm } from 'react-hook-form';
 
 import { useRouter } from 'next/navigation';
-import * as ServerActions from 'src/server/actions';
+import * as ServerActions from 'src/utils/actions';
 import { DEFAULT_STATS } from 'src/utils/constants/defaults';
 import { CharacterFormContext } from 'src/utils/contexts';
 import { zCharacterCreateInput } from 'src/utils/validators';
@@ -49,7 +49,8 @@ export default function CharacterAddForm({
   async function addCharacter(c: CharacterCreateInput) {
     try {
       await ServerActions.addCharacter(c);
-      void router.push('/');
+      router.refresh();
+      router.push('/');
     } catch (e) {
       enqueueSnackbar((e as Error).message, { variant: 'error' });
     }

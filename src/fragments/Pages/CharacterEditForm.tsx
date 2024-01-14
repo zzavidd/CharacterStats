@@ -14,7 +14,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 
 import { useRouter } from 'next/navigation';
 import { useSnackbar } from 'notistack';
-import * as ServerActions from 'src/server/actions';
+import * as ServerActions from 'src/utils/actions';
 import CharacterForm from './CharacterForm';
 
 export default function CharacterEditForm({
@@ -49,7 +49,7 @@ export default function CharacterEditForm({
   async function updateCharacter(c: CharacterEditInput) {
     try {
       await ServerActions.updateCharacter(c);
-      void router.push('/');
+      router.push('/');
     } catch (e) {
       enqueueSnackbar((e as Error).message, { variant: 'error' });
     }
