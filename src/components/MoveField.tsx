@@ -18,7 +18,7 @@ export default function MoveField({ index }: MoveFieldProps) {
   const value = watch(`learnset.${index}.moveId`);
 
   return (
-    <Stack direction={'row'} alignItems={'center'} width={'100%'}>
+    <Stack direction={'row'} alignItems={'center'} columnGap={1} width={'100%'}>
       <ButtonBase
         onClick={() => moveSelect.open()}
         sx={{
@@ -53,6 +53,7 @@ export default function MoveField({ index }: MoveFieldProps) {
         </Stack>
       </ButtonBase>
       <IconButton
+        size={'small'}
         onClick={(e) => {
           remove(index);
           e.stopPropagation();

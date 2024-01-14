@@ -19,9 +19,12 @@ export default function LearnsetBlock() {
   const { learnsetMethods, moveSelect } = useContext(CharacterFormContext);
   const {
     formState: { errors },
+    setValue,
     register,
+    watch,
   } = useFormContext<CharacterCreateInput>();
   const { fields } = learnsetMethods;
+  const learnsetValues = watch('learnset');
 
   const { token } = useTypeColorToken();
 
@@ -45,12 +48,18 @@ export default function LearnsetBlock() {
                 validate: (v) => v >= 0 && v <= 100,
               })}
               type={'number'}
-              sx={{ maxWidth: (t) => t.spacing(9) }}
+              onBlur={() => {
+                setValue(
+                  'learnset',
+                  learnsetValues.sort((a, b) => a.level - b.level),
+                );
+              }}
+              sx={{ maxWidth: 90 }}
               inputProps={{ style: { textAlign: 'right' } }}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position={'start'}>
-                    <Typography>Lv</Typography>
+                    <Typography color={'text.secondary'}>Lv</Typography>
                   </InputAdornment>
                 ),
               }}
