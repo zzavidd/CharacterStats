@@ -16,6 +16,9 @@ declare module '@mui/material/Button' {
 declare module '@mui/material/InputBase' {
   interface InputBasePropsColorOverrides extends ColorOverrides<true> {}
 }
+declare module '@mui/material/TextField' {
+  interface TextFieldPropsColorOverrides extends ColorOverrides<true> {}
+}
 
 interface ColorOverrides<T> {
   Normal: T;

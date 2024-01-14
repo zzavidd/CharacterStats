@@ -52,7 +52,7 @@ export default function MoveSelect() {
       {...bindDialog(moveSelect)}
       fullWidth={true}
       maxWidth={'xs'}
-      keepMounted={true}>
+      keepMounted={false}>
       <DialogTitle>Select a move</DialogTitle>
       <DialogContent sx={{ height: '100vh', p: 0 }} dividers={true}>
         <Paper square={true}>

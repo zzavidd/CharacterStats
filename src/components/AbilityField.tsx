@@ -11,7 +11,7 @@ import { CharacterFormContext } from 'src/utils/contexts';
 export default function AbilityField({ name, label }: AbilityFieldProps) {
   const { abilities, abilitySelect, useAbilityField } =
     useContext(CharacterFormContext);
-  const { control, setValue } = useFormContext<CharacterInput>();
+  const { control, setValue } = useFormContext<CharacterCreateInput>();
   const [, setAbilityField] = useAbilityField;
 
   return (

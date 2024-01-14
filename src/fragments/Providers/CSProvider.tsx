@@ -7,6 +7,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 
 import { persistor, store } from 'src/utils/reducers';
 
+import SnackbarManager from './SnackbarManager';
 import ThemeManager from './ThemeManager';
 
 export default function CSProvider({ children, session }: CSProviderProps) {
@@ -14,7 +15,9 @@ export default function CSProvider({ children, session }: CSProviderProps) {
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <SessionProvider session={session}>
-          <ThemeManager>{children}</ThemeManager>
+          <ThemeManager>
+            <SnackbarManager>{children}</SnackbarManager>
+          </ThemeManager>
         </SessionProvider>
       </PersistGate>
     </Provider>

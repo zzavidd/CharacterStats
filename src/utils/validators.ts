@@ -2,26 +2,27 @@ import { z } from 'zod';
 
 import { PokeType, Stat, Universe } from './constants/enums';
 
+const zStat = z.number().min(0).max(255);
 export const zStats = z.object({
-  [Stat.HP]: z.number(),
-  [Stat.ATTACK]: z.number(),
-  [Stat.DEFENCE]: z.number(),
-  [Stat.SPATK]: z.number(),
-  [Stat.SPDEF]: z.number(),
-  [Stat.SPEED]: z.number(),
+  [Stat.HP]: zStat,
+  [Stat.ATTACK]: zStat,
+  [Stat.DEFENCE]: zStat,
+  [Stat.SPATK]: zStat,
+  [Stat.SPDEF]: zStat,
+  [Stat.SPEED]: zStat,
 });
 
 export const zCharacter = z.object({
   id: z.string().optional(),
-  name: z.string(),
-  universe: z.nativeEnum(Universe),
+  name: z.string().min(1),
+  universe: z.nativeEnum(Universe).optional(),
   type1: z.nativeEnum(PokeType),
-  type2: z.nativeEnum(PokeType).nullish(),
-  ability1: z.number(),
-  ability2: z.number().nullish(),
-  abilityX: z.number().nullish(),
+  type2: z.nativeEnum(PokeType).nullable(),
+  ability1: z.number().optional(),
+  ability2: z.number().nullable(),
+  abilityX: z.number().nullable(),
   stats: zStats,
-  learnset: z.record(z.string(), z.number().array()),
+  learnset: z.record(z.coerce.number(), z.number().array()),
   lastModified: z.number(),
   createTime: z.number(),
 });
@@ -37,15 +38,15 @@ export const zCharacterWithErrors = zCharacter
     errors: z.object({ message: z.string() }).array(),
   });
 
-export const zCharacterInput = zCharacter
-  .omit({
-    id: true,
-    lastModified: true,
-    createTime: true,
-  })
-  .extend({
-    universe: z.nativeEnum(Universe).optional(),
-    type1: z.nativeEnum(PokeType).optional(),
-    ability1: z.number().optional(),
-    learnset: z.object({ level: z.number(), moveId: z.number() }).array(),
-  });
+export const zCharacterEditInput = zCharacter.extend({
+  type1: z.nativeEnum(PokeType).optional(),
+  learnset: z
+    .object({ level: z.number().min(0).max(100), moveId: z.number() })
+    .array(),
+});
+
+export const zCharacterCreateInput = zCharacterEditInput.omit({
+  id: true,
+  lastModified: true,
+  createTime: true,
+});

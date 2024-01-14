@@ -1,7 +1,8 @@
 import { getDoc } from 'firebase/firestore';
 import { getServerSession } from 'next-auth';
 import { notFound, redirect } from 'next/navigation';
-import { CharacterEditForm } from 'src/fragments/Pages/CharacterForm';
+import CharacterEditForm from 'src/fragments/Pages/CharacterEditForm';
+
 import { characterDocumentRef } from 'src/utils/client/firebase';
 import { getAbilities, getMoves, getTypes } from 'src/utils/functions';
 

@@ -115,7 +115,8 @@ function useCharacterSieve(
   }
   if (filters.universe.length) {
     characters = characters.filter(
-      (c) => 'universe' in c && filters.universe.includes(c.universe),
+      (c) =>
+        'universe' in c && c.universe && filters.universe.includes(c.universe),
     );
   }
 

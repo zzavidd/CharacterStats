@@ -1,6 +1,7 @@
 import { Close } from '@mui/icons-material';
 import {
   FormControl,
+  FormHelperText,
   IconButton,
   InputAdornment,
   InputLabel,
@@ -22,8 +23,11 @@ import { CharacterFormContext } from 'src/utils/contexts';
 
 export default function TypeField({ label, name }: TypeFieldProps) {
   const { types } = useContext(CharacterFormContext);
-  const { control, setValue, watch } = useFormContext<CharacterInput>();
+  const { control, formState, setValue, watch } =
+    useFormContext<CharacterCreateInput>();
   const typeValue = watch(name);
+
+  const error = formState.errors[name];
 
   return (
     <FormControl fullWidth={true}>
@@ -31,66 +35,66 @@ export default function TypeField({ label, name }: TypeFieldProps) {
       <Controller
         control={control}
         name={name}
-        render={({ field: { value, ...field } }) => {
-          return (
-            <Select
-              {...field}
-              label={value ? '' : label}
-              value={value || ''}
-              color={typeValue ? TypeName[typeValue] : undefined}
-              IconComponent={value ? SvgIcon : undefined}
-              sx={{
-                backgroundColor: (t) =>
-                  value ? t.palette[TypeName[value]].main : void 0,
-              }}
-              endAdornment={
-                value ? (
-                  <InputAdornment position={'end'}>
-                    <IconButton
-                      onClick={() =>
-                        setValue(name, undefined, {
-                          shouldDirty: true,
-                        })
-                      }>
-                      <Close />
-                    </IconButton>
-                  </InputAdornment>
-                ) : null
-              }
-              renderValue={(type) => (
-                <Stack direction={'row'} alignItems={'center'} columnGap={2}>
-                  <Image
-                    src={type ? AppIcon.Types[type] : ''}
-                    alt={TypeName[type]}
-                    height={20}
-                    width={20}
-                  />
-                  <Typography>{TypeName[type]}</Typography>
-                </Stack>
-              )}>
-              {Object.entries(types)
-                .filter(([id]) => Number(id) < 1e4)
-                .sort(([, a], [, b]) => a.localeCompare(b))
-                .map(([id]) => {
-                  const typeId = id as unknown as PokeType;
-                  return (
-                    <MenuItem value={typeId} key={typeId}>
-                      <ListItemIcon sx={{ minWidth: 0 }}>
-                        <Image
-                          src={AppIcon.Types[typeId]}
-                          alt={TypeName[typeId]}
-                          height={20}
-                          width={20}
-                        />
-                      </ListItemIcon>
-                      <ListItemText>{TypeName[typeId]}</ListItemText>
-                    </MenuItem>
-                  );
-                })}
-            </Select>
-          );
-        }}
+        render={({ field: { value, ...field } }) => (
+          <Select
+            {...field}
+            label={value ? '' : label}
+            value={value || ''}
+            color={value ? TypeName[value] : undefined}
+            IconComponent={value ? SvgIcon : undefined}
+            error={!!error}
+            sx={{
+              backgroundColor: (t) =>
+                value ? t.palette[TypeName[value]].main : void 0,
+            }}
+            endAdornment={
+              value ? (
+                <InputAdornment position={'end'}>
+                  <IconButton
+                    onClick={() =>
+                      setValue(name, undefined, {
+                        shouldDirty: true,
+                      })
+                    }>
+                    <Close />
+                  </IconButton>
+                </InputAdornment>
+              ) : null
+            }
+            renderValue={(type) => (
+              <Stack direction={'row'} alignItems={'center'} columnGap={2}>
+                <Image
+                  src={type ? AppIcon.Types[type] : ''}
+                  alt={TypeName[type]}
+                  height={20}
+                  width={20}
+                />
+                <Typography>{TypeName[type]}</Typography>
+              </Stack>
+            )}>
+            {Object.entries(types)
+              .filter(([id]) => Number(id) < 1e4)
+              .sort(([, a], [, b]) => a.localeCompare(b))
+              .map(([id]) => {
+                const typeId = Number(id) as unknown as PokeType;
+                return (
+                  <MenuItem value={typeId} key={typeId}>
+                    <ListItemIcon sx={{ minWidth: 0 }}>
+                      <Image
+                        src={AppIcon.Types[typeId]}
+                        alt={TypeName[typeId]}
+                        height={20}
+                        width={20}
+                      />
+                    </ListItemIcon>
+                    <ListItemText>{TypeName[typeId]}</ListItemText>
+                  </MenuItem>
+                );
+              })}
+          </Select>
+        )}
       />
+      {error ? <FormHelperText>{error.message}</FormHelperText> : null}
     </FormControl>
   );
 }

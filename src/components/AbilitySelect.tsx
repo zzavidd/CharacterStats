@@ -52,7 +52,7 @@ export default function AbilitySelect() {
       {...bindDialog(abilitySelect)}
       fullWidth={true}
       maxWidth={'xs'}
-      keepMounted={true}>
+      keepMounted={false}>
       <DialogTitle>Select an ability</DialogTitle>
       <DialogContent sx={{ height: '100vh', p: 0 }} dividers={true}>
         <Paper square={true}>
@@ -98,7 +98,7 @@ const AbilityOption = React.memo<AbilityOptionProps>(
   ({ ability, style }) => {
     const { id, name, commonType, description } = ability;
     const { abilitySelect, useAbilityField } = useContext(CharacterFormContext);
-    const { setValue } = useFormContext<CharacterInput>();
+    const { setValue } = useFormContext<CharacterCreateInput>();
     const [abilityField] = useAbilityField;
 
     function onSelect() {

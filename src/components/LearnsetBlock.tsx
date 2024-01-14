@@ -11,13 +11,16 @@ import { useContext } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { CharacterFormContext } from 'src/utils/contexts';
-import { useTypeColorToken } from 'src/utils/functions';
+import { useTypeColorToken } from 'src/utils/hooks';
 
 import MoveField from './MoveField';
 
 export default function LearnsetBlock() {
   const { learnsetMethods, moveSelect } = useContext(CharacterFormContext);
-  const { register } = useFormContext<CharacterInput>();
+  const {
+    formState: { errors },
+    register,
+  } = useFormContext<CharacterCreateInput>();
   const { fields } = learnsetMethods;
 
   const { token } = useTypeColorToken();
@@ -29,7 +32,8 @@ export default function LearnsetBlock() {
         variant={'contained'}
         onClick={() => moveSelect.open()}
         startIcon={<Add />}
-        color={token}>
+        color={token}
+        sx={{ py: 3 }}>
         Add Move
       </Button>
       <Stack rowGap={2}>
@@ -40,6 +44,7 @@ export default function LearnsetBlock() {
                 valueAsNumber: true,
                 validate: (v) => v >= 0 && v <= 100,
               })}
+              type={'number'}
               sx={{ maxWidth: (t) => t.spacing(9) }}
               inputProps={{ style: { textAlign: 'right' } }}
               InputProps={{
@@ -49,6 +54,8 @@ export default function LearnsetBlock() {
                   </InputAdornment>
                 ),
               }}
+              error={!!errors.learnset?.[index]?.level}
+              helperText={errors.learnset?.[index]?.level?.message}
             />
             <MoveField index={index} />
           </Stack>

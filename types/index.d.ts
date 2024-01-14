@@ -4,7 +4,8 @@ import type { z } from 'zod';
 import type { DamageClass, PokeType } from 'src/utils/constants/enums';
 import type {
   zCharacter,
-  zCharacterInput,
+  zCharacterCreateInput,
+  zCharacterEditInput,
   zCharacterWithErrors,
   zStats,
 } from 'src/utils/validators';
@@ -12,7 +13,8 @@ import type {
 declare global {
   export type Character = z.infer<typeof zCharacter>;
   export type CharacterWithErrors = z.infer<typeof zCharacterWithErrors>;
-  export type CharacterInput = z.infer<typeof zCharacterInput>;
+  export type CharacterCreateInput = z.infer<typeof zCharacterCreateInput>;
+  export type CharacterEditInput = z.infer<typeof zCharacterEditInput>;
   export type Stats = z.infer<typeof zStats>;
 
   export type ReactDispatch<T> = Dispatch<SetStateAction<T>>;

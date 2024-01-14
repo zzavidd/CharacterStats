@@ -1,6 +1,7 @@
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
-import { CharacterAddForm } from 'src/fragments/Pages/CharacterForm';
+import CharacterAddForm from 'src/fragments/Pages/CharacterAddForm';
+
 import { getAbilities, getMoves, getTypes } from 'src/utils/functions';
 
 export default async function AddPage() {
