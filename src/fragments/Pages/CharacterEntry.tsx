@@ -23,6 +23,7 @@ import {
   usePopupState,
 } from 'material-ui-popup-state/hooks';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import React, { useContext } from 'react';
 
 import { COLOR_TYPE } from 'src/utils/constants/colors';
@@ -30,7 +31,6 @@ import { StatMap } from 'src/utils/constants/defaults';
 import { Stat, TypeName } from 'src/utils/constants/enums';
 import AppIcon from 'src/utils/constants/icons';
 import { CharacterContext, CharacterEntryContext } from 'src/utils/contexts';
-import { useNavigator } from 'src/utils/hooks';
 
 const CharacterEntry = React.memo<{
   character: Character | CharacterWithErrors;
@@ -134,10 +134,10 @@ function CharacterMenu() {
     characterDeleteDialog,
     characterMenu,
   } = useContext(CharacterEntryContext);
-  const navigate = useNavigator();
+  const router = useRouter();
 
   function onEdit() {
-    navigate(`/form?id=${c.id}`);
+    router.push(`/form?id=${c.id}`);
   }
 
   function onDelete() {

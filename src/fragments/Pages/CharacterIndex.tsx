@@ -79,7 +79,7 @@ function CharacterControls() {
       <Button
         variant={'contained'}
         startIcon={<Add />}
-        href={'/add'}
+        href={'/form'}
         LinkComponent={Link}>
         Add Character
       </Button>

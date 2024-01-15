@@ -13,9 +13,9 @@ import {
 import { getDoc } from 'firebase/firestore';
 import { usePopupState } from 'material-ui-popup-state/hooks';
 import Link from 'next/link';
-import { notFound } from 'next/navigation';
+import { notFound, useRouter } from 'next/navigation';
 import { useSnackbar } from 'notistack';
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import {
   FormProvider,
   useFieldArray,
@@ -30,7 +30,7 @@ import {
   CharacterFormContext,
   CharacterFormContextProps,
 } from 'src/utils/contexts';
-import { useNavigator, useTypeColorToken } from 'src/utils/hooks';
+import { useTypeColorToken } from 'src/utils/hooks';
 import { zCharacterInput } from 'src/utils/validators';
 
 import CharacterForm from './CharacterForm';
@@ -56,7 +56,7 @@ export default function CharacterFormIndex({
   const abilitySelect = usePopupState({ variant: 'dialog' });
   const moveSelect = usePopupState({ variant: 'dialog' });
   const { enqueueSnackbar } = useSnackbar();
-  const navigate = useNavigator();
+  const router = useRouter();
 
   useEffect(() => {
     (async () => {
@@ -85,7 +85,7 @@ export default function CharacterFormIndex({
   async function addCharacter(c: CharacterInput) {
     try {
       await ServerActions.addCharacter(c);
-      navigate('/');
+      router.push('/');
     } catch (e) {
       enqueueSnackbar((e as Error).message, { variant: 'error' });
     }
@@ -94,7 +94,7 @@ export default function CharacterFormIndex({
   async function updateCharacter(c: CharacterInput) {
     try {
       await ServerActions.updateCharacter(c);
-      navigate('/');
+      router.push('/');
     } catch (e) {
       enqueueSnackbar((e as Error).message, { variant: 'error' });
     }
@@ -119,8 +119,10 @@ export default function CharacterFormIndex({
   return (
     <CharacterFormContext.Provider value={staticContext}>
       <FormProvider {...formMethods}>
-        <form onSubmit={formMethods.handleSubmit(formSettings.onSubmit)}>
-          <React.Fragment>
+        <form
+          onSubmit={formMethods.handleSubmit(formSettings.onSubmit)}
+          style={{ height: '100%' }}>
+          <Stack justifyContent={'space-between'} height={'100%'}>
             <Container maxWidth={'xs'}>
               <Stack p={4} rowGap={2}>
                 <Typography variant={'h1'}>
@@ -130,7 +132,7 @@ export default function CharacterFormIndex({
               </Stack>
             </Container>
             <FormFooter />
-          </React.Fragment>
+          </Stack>
         </form>
       </FormProvider>
     </CharacterFormContext.Provider>
