@@ -5,7 +5,7 @@ const [owner, repo] = process.env.GITHUB_REPOSITORY?.split('/') || [];
 /** @type {import('next').NextConfig} */
 module.exports = {
   assetPrefix: isProd ? `https://${owner}.github.io/${repo}` : undefined,
-  basePath: isProd ? `/${repo}` : undefined,
+  // basePath: isProd ? `/${repo}` : undefined,
   eslint: {
     ignoreDuringBuilds: true,
   },
