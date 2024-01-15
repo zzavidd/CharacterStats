@@ -4,8 +4,7 @@ import type { z } from 'zod';
 import type { DamageClass, PokeType } from 'src/utils/constants/enums';
 import type {
   zCharacter,
-  zCharacterCreateInput,
-  zCharacterEditInput,
+  zCharacterInput,
   zCharacterWithErrors,
   zStats,
 } from 'src/utils/validators';
@@ -13,8 +12,7 @@ import type {
 declare global {
   export type Character = z.infer<typeof zCharacter>;
   export type CharacterWithErrors = z.infer<typeof zCharacterWithErrors>;
-  export type CharacterCreateInput = z.infer<typeof zCharacterCreateInput>;
-  export type CharacterEditInput = z.infer<typeof zCharacterEditInput>;
+  export type CharacterInput = z.infer<typeof zCharacterInput>;
   export type Stats = z.infer<typeof zStats>;
 
   export type ReactDispatch<T> = Dispatch<SetStateAction<T>>;
@@ -45,5 +43,18 @@ declare global {
     generation: number;
     description: string;
     commonType: PokeType;
+  }
+
+  interface CharacterFormProps {
+    abilities: PokeAbilityMap;
+    moves: PokeMoveMap;
+    types: PokeTypeMap;
+    characterInput?: CharacterInput;
+  }
+
+  interface FormSettings {
+    buttonText: string;
+    op: string;
+    onSubmit: (c: CharacterInput) => Promise<void>;
   }
 }

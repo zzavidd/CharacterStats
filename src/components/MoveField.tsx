@@ -12,7 +12,7 @@ import { CharacterFormContext } from 'src/utils/contexts';
 export default function MoveField({ index }: MoveFieldProps) {
   const { learnsetMethods, moves, moveSelect } =
     useContext(CharacterFormContext);
-  const { watch } = useFormContext<CharacterCreateInput>();
+  const { watch } = useFormContext<CharacterInput>();
 
   const { remove } = learnsetMethods;
   const value = watch(`learnset.${index}.moveId`);

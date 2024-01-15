@@ -25,7 +25,7 @@ export default function CharacterForm() {
     control,
     formState: { errors },
     register,
-  } = useFormContext<CharacterCreateInput>();
+  } = useFormContext<CharacterInput>();
   const { token } = useTypeColorToken();
 
   return (

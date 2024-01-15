@@ -98,7 +98,7 @@ const AbilityOption = React.memo<AbilityOptionProps>(
   ({ ability, style }) => {
     const { id, name, commonType, description } = ability;
     const { abilitySelect, useAbilityField } = useContext(CharacterFormContext);
-    const { setValue } = useFormContext<CharacterCreateInput>();
+    const { setValue } = useFormContext<CharacterInput>();
     const [abilityField] = useAbilityField;
 
     function onSelect() {

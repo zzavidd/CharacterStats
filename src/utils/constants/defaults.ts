@@ -9,6 +9,18 @@ export const DEFAULT_STATS: Stats = {
   [Stat.SPEED]: 0,
 };
 
+export const DEFAULT_CHARACTER_INPUT: CharacterInput = {
+  name: '',
+  universe: undefined,
+  type1: undefined,
+  type2: null,
+  ability1: undefined,
+  ability2: null,
+  abilityX: null,
+  learnset: [],
+  stats: DEFAULT_STATS,
+};
+
 export const StatMap: Record<Stat, string> = {
   [Stat.HP]: 'HP',
   [Stat.ATTACK]: 'Attack',

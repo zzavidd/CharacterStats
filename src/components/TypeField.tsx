@@ -24,7 +24,7 @@ import { CharacterFormContext } from 'src/utils/contexts';
 export default function TypeField({ label, name }: TypeFieldProps) {
   const { types } = useContext(CharacterFormContext);
   const { control, formState, setValue, watch } =
-    useFormContext<CharacterCreateInput>();
+    useFormContext<CharacterInput>();
   const typeValue = watch(name);
 
   const error = formState.errors[name];

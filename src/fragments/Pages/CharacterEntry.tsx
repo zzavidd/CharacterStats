@@ -137,7 +137,7 @@ function CharacterMenu() {
   const navigate = useNavigator();
 
   function onEdit() {
-    navigate(`/edit/${c.id}`);
+    navigate(`/form?id=${c.id}`);
   }
 
   function onDelete() {

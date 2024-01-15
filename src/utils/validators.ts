@@ -38,15 +38,11 @@ export const zCharacterWithErrors = zCharacter
     errors: z.object({ message: z.string() }).array(),
   });
 
-export const zCharacterEditInput = zCharacter.extend({
+export const zCharacterInput = zCharacter.extend({
   type1: z.nativeEnum(PokeType).optional(),
   learnset: z
     .object({ level: z.number().min(0).max(100), moveId: z.number() })
     .array(),
-});
-
-export const zCharacterCreateInput = zCharacterEditInput.omit({
-  id: true,
-  lastModified: true,
-  createTime: true,
+  lastModified: z.number().optional(),
+  createTime: z.number().optional(),
 });

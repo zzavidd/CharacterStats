@@ -8,7 +8,7 @@ import {
 import { PokeType } from 'src/utils/constants/enums';
 import invariant from 'tiny-invariant';
 
-export async function addCharacter(c: CharacterCreateInput) {
+export async function addCharacter(c: CharacterInput) {
   const learnset = c.learnset.reduce<Character['learnset']>((acc, a) => {
     return { ...acc, [a.level]: [...(acc[a.level] || []), a.moveId] };
   }, {});
@@ -21,7 +21,7 @@ export async function addCharacter(c: CharacterCreateInput) {
   });
 }
 
-export async function updateCharacter(c: CharacterEditInput) {
+export async function updateCharacter(c: CharacterInput) {
   invariant(c.id, 'Character has no assigned ID.');
 
   const learnset = c.learnset.reduce<Character['learnset']>((acc, a) => {

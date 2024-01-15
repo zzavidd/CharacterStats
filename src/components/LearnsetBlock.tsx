@@ -22,7 +22,7 @@ export default function LearnsetBlock() {
     setValue,
     register,
     watch,
-  } = useFormContext<CharacterCreateInput>();
+  } = useFormContext<CharacterInput>();
   const { fields } = learnsetMethods;
   const learnsetValues = watch('learnset');
 
