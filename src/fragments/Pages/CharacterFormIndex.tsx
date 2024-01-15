@@ -12,6 +12,7 @@ import {
 } from '@mui/material';
 import { getDoc } from 'firebase/firestore';
 import { usePopupState } from 'material-ui-popup-state/hooks';
+import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { useSnackbar } from 'notistack';
 import React, { useContext, useEffect, useState } from 'react';
@@ -151,6 +152,7 @@ function FormFooter() {
               variant={'outlined'}
               color={token}
               href={'/'}
+              LinkComponent={Link}
               fullWidth={true}>
               Cancel
             </Button>

@@ -9,7 +9,8 @@ export function useNavigator(): (href: string) => void {
   return (href) =>
     router.push(
       process.env.NEXT_PUBLIC_APP_ENV === 'production'
-        ? `/CharacterStats${href}`
+        ? // ? `/CharacterStats${href}`
+          href
         : href,
     );
 }

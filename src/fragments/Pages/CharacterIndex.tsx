@@ -5,6 +5,7 @@ import { Box, Button, Container, Stack } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import Fuse from 'fuse.js';
 import { orderBy } from 'natural-orderby';
+import Link from 'next/link';
 import { useContext, useState } from 'react';
 
 import SearchField from 'src/components/SearchField';
@@ -75,7 +76,11 @@ function CharacterControls() {
   const [searchTerm, setSearchTerm] = useSearchTerm;
   return (
     <Stack direction={'row'} justifyContent={'space-between'}>
-      <Button variant={'contained'} startIcon={<Add />} href={'/add'}>
+      <Button
+        variant={'contained'}
+        startIcon={<Add />}
+        href={'/add'}
+        LinkComponent={Link}>
         Add Character
       </Button>
       <Stack direction={'row'} columnGap={2}>
