@@ -12,9 +12,9 @@ import { zCharacterEditInput } from 'src/utils/validators';
 
 import LoadingButton from '@mui/lab/LoadingButton';
 
-import { useRouter } from 'next/navigation';
 import { useSnackbar } from 'notistack';
 import * as ServerActions from 'src/utils/actions';
+import { useNavigator } from 'src/utils/hooks';
 import CharacterForm from './CharacterForm';
 
 export default function CharacterEditForm({
@@ -44,12 +44,12 @@ export default function CharacterEditForm({
   const abilitySelect = usePopupState({ variant: 'dialog' });
   const moveSelect = usePopupState({ variant: 'dialog' });
   const { enqueueSnackbar } = useSnackbar();
-  const router = useRouter();
+  const navigate = useNavigator();
 
   async function updateCharacter(c: CharacterEditInput) {
     try {
       await ServerActions.updateCharacter(c);
-      router.push('/');
+      navigate('/');
     } catch (e) {
       enqueueSnackbar((e as Error).message, { variant: 'error' });
     }

@@ -9,10 +9,10 @@ import { useSnackbar } from 'notistack';
 import { useState } from 'react';
 import { FormProvider, useFieldArray, useForm } from 'react-hook-form';
 
-import { useRouter } from 'next/navigation';
 import * as ServerActions from 'src/utils/actions';
 import { DEFAULT_STATS } from 'src/utils/constants/defaults';
 import { CharacterFormContext } from 'src/utils/contexts';
+import { useNavigator } from 'src/utils/hooks';
 import { zCharacterCreateInput } from 'src/utils/validators';
 import CharacterForm from './CharacterForm';
 
@@ -44,13 +44,12 @@ export default function CharacterAddForm({
   const abilitySelect = usePopupState({ variant: 'dialog' });
   const moveSelect = usePopupState({ variant: 'dialog' });
   const { enqueueSnackbar } = useSnackbar();
-  const router = useRouter();
+  const navigate = useNavigator();
 
   async function addCharacter(c: CharacterCreateInput) {
     try {
       await ServerActions.addCharacter(c);
-      router.refresh();
-      router.push('/');
+      navigate('/');
     } catch (e) {
       enqueueSnackbar((e as Error).message, { variant: 'error' });
     }
