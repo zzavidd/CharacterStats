@@ -1,14 +1,15 @@
 'use client';
 
 import { addDoc, deleteDoc, setDoc } from 'firebase/firestore';
+import invariant from 'tiny-invariant';
+
 import {
   characterCollectionRef,
   characterDocumentRef,
 } from 'src/utils/client/firebase';
 import { PokeType } from 'src/utils/constants/enums';
-import invariant from 'tiny-invariant';
 
-export async function addCharacter(c: CharacterInput) {
+export async function addCharacter(c: CharacterInput): Promise<void> {
   const learnset = c.learnset.reduce<Character['learnset']>((acc, a) => {
     return { ...acc, [a.level]: [...(acc[a.level] || []), a.moveId] };
   }, {});
@@ -21,7 +22,7 @@ export async function addCharacter(c: CharacterInput) {
   });
 }
 
-export async function updateCharacter(c: CharacterInput) {
+export async function updateCharacter(c: CharacterInput): Promise<void> {
   invariant(c.id, 'Character has no assigned ID.');
 
   const learnset = c.learnset.reduce<Character['learnset']>((acc, a) => {
@@ -34,6 +35,6 @@ export async function updateCharacter(c: CharacterInput) {
   });
 }
 
-export async function deleteCharacter(id: string) {
+export async function deleteCharacter(id: string): Promise<void> {
   await deleteDoc(characterDocumentRef(id));
 }

@@ -71,6 +71,7 @@ export enum DamageClass {
 }
 
 export enum Universe {
+  NONE = 'None',
   DC = 'DC',
   MARVEL = 'Marvel',
   SMASH = 'Smash',

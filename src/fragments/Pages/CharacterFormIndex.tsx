@@ -1,6 +1,7 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import LoadingButton from '@mui/lab/LoadingButton';
 import {
   Button,
   Container,
@@ -9,8 +10,11 @@ import {
   Toolbar,
   Typography,
 } from '@mui/material';
+import { getDoc } from 'firebase/firestore';
 import { usePopupState } from 'material-ui-popup-state/hooks';
-import { useContext, useState } from 'react';
+import { notFound } from 'next/navigation';
+import { useSnackbar } from 'notistack';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   FormProvider,
   useFieldArray,
@@ -18,31 +22,31 @@ import {
   useFormContext,
 } from 'react-hook-form';
 
+import * as ServerActions from 'src/utils/actions';
+import { characterDocumentRef } from 'src/utils/client/firebase';
+import { DEFAULT_CHARACTER_INPUT } from 'src/utils/constants/defaults';
 import {
   CharacterFormContext,
   CharacterFormContextProps,
 } from 'src/utils/contexts';
+import { useNavigator, useTypeColorToken } from 'src/utils/hooks';
 import { zCharacterInput } from 'src/utils/validators';
 
-import LoadingButton from '@mui/lab/LoadingButton';
-
-import { useSnackbar } from 'notistack';
-import * as ServerActions from 'src/utils/actions';
-import { DEFAULT_CHARACTER_INPUT } from 'src/utils/constants/defaults';
-import { useNavigator, useTypeColorToken } from 'src/utils/hooks';
 import CharacterForm from './CharacterForm';
 
 export default function CharacterFormIndex({
   abilities,
   moves,
   types,
-  characterInput,
 }: CharacterFormProps) {
+  const params = new URLSearchParams(location.search);
+  const id = params.get('id');
+
   const useAbilityField = useState<AbilityKey | null>(null);
   const formMethods = useForm<CharacterInput>({
     criteriaMode: 'all',
     resolver: zodResolver(zCharacterInput),
-    values: characterInput || DEFAULT_CHARACTER_INPUT,
+    values: DEFAULT_CHARACTER_INPUT,
   });
   const learnsetMethods = useFieldArray({
     control: formMethods.control,
@@ -52,6 +56,30 @@ export default function CharacterFormIndex({
   const moveSelect = usePopupState({ variant: 'dialog' });
   const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigator();
+
+  useEffect(() => {
+    (async () => {
+      let character;
+      if (id) {
+        const snapshot = await getDoc(characterDocumentRef(id));
+        if (!snapshot.exists()) {
+          notFound();
+        }
+        const data = snapshot.data();
+        character = {
+          ...data,
+          learnset: Object.entries(data.learnset).flatMap(([level, moveIds]) =>
+            moveIds.map((moveId) => ({ level: Number(level), moveId })),
+          ),
+        };
+        for (const key of Object.keys(character)) {
+          formMethods.setValue(key as keyof CharacterInput, character[key], {
+            shouldValidate: true,
+          });
+        }
+      }
+    })();
+  }, [id, formMethods]);
 
   async function addCharacter(c: CharacterInput) {
     try {
@@ -71,7 +99,7 @@ export default function CharacterFormIndex({
     }
   }
 
-  const isAdd = !characterInput;
+  const isAdd = !id;
   const formSettings = isAdd
     ? { op: 'Add', onSubmit: addCharacter, buttonText: 'Submit' }
     : { op: 'Edit', onSubmit: updateCharacter, buttonText: 'Update' };
@@ -91,7 +119,7 @@ export default function CharacterFormIndex({
     <CharacterFormContext.Provider value={staticContext}>
       <FormProvider {...formMethods}>
         <form onSubmit={formMethods.handleSubmit(formSettings.onSubmit)}>
-          <>
+          <React.Fragment>
             <Container maxWidth={'xs'}>
               <Stack p={4} rowGap={2}>
                 <Typography variant={'h1'}>
@@ -101,7 +129,7 @@ export default function CharacterFormIndex({
               </Stack>
             </Container>
             <FormFooter />
-          </>
+          </React.Fragment>
         </form>
       </FormProvider>
     </CharacterFormContext.Provider>

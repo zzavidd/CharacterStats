@@ -49,7 +49,6 @@ declare global {
     abilities: PokeAbilityMap;
     moves: PokeMoveMap;
     types: PokeTypeMap;
-    characterInput?: CharacterInput;
   }
 
   interface FormSettings {

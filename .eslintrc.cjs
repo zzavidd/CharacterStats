@@ -8,6 +8,7 @@ module.exports = {
     project: ['**/tsconfig.json'],
   },
   rules: {
+    '@typescript-eslint/await-thenable': 'off',
     '@typescript-eslint/consistent-type-imports': 'off',
     '@typescript-eslint/consistent-type-exports': 'off',
   },

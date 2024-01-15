@@ -37,6 +37,7 @@ export default function CharacterForm() {
         placeholder={'Enter character name...'}
         error={!!errors.name}
         helperText={errors.name?.message}
+        InputLabelProps={{ shrink: true }}
       />
       <FormControl>
         <InputLabel>Universe:</InputLabel>

@@ -15,7 +15,7 @@ export const zStats = z.object({
 export const zCharacter = z.object({
   id: z.string().optional(),
   name: z.string().min(1),
-  universe: z.nativeEnum(Universe).optional(),
+  universe: z.nativeEnum(Universe),
   type1: z.nativeEnum(PokeType),
   type2: z.nativeEnum(PokeType).nullable(),
   ability1: z.number().optional(),
@@ -40,6 +40,7 @@ export const zCharacterWithErrors = zCharacter
 
 export const zCharacterInput = zCharacter.extend({
   type1: z.nativeEnum(PokeType).optional(),
+  universe: z.nativeEnum(Universe),
   learnset: z
     .object({ level: z.number().min(0).max(100), moveId: z.number() })
     .array(),
