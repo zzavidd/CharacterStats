@@ -9,7 +9,9 @@ export default function ThemeManager({ children }: React.PropsWithChildren) {
   return (
     <AppRouterCacheProvider
       options={{
-        ...(process.env.NODE_ENV === 'development' && { stylisPlugins: [] }),
+        ...(process.env.NEXT_PUBLIC_APP_ENV === 'development' && {
+          stylisPlugins: [],
+        }),
       }}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
