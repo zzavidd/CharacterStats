@@ -1,14 +1,17 @@
+const isProd = process.env.NODE_ENV === 'production';
+
+const [owner, repo] = process.env.GITHUB_REPOSITORY?.split('/') || [];
+
 /** @type {import('next').NextConfig} */
-const nextConfig = {
+module.exports = {
+  assetPrefix: isProd ? `https://${owner}.github.io/${repo}` : undefined,
   eslint: {
     ignoreDuringBuilds: true,
   },
-  output: process.env.NODE_ENV === 'development' ? undefined : 'export',
+  output: isProd ? 'export' : undefined,
   reactStrictMode: true,
   swcMinify: true,
   typescript: {
     ignoreBuildErrors: true,
   },
 };
-
-module.exports = nextConfig;
