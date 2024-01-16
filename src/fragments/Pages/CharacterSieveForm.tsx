@@ -14,7 +14,7 @@ import {
 import { Order } from 'natural-orderby';
 import { useContext } from 'react';
 
-import { PokeType, Universe } from 'src/utils/constants/enums';
+import { PokeType, TypeName, Universe } from 'src/utils/constants/enums';
 import { SortOrders, SortProperties } from 'src/utils/constants/options';
 import { CharacterContext } from 'src/utils/contexts';
 import {
@@ -48,7 +48,7 @@ export default function CharacterSieveForm() {
     dispatch(AppActions.setSortOrder(e.target.value as Order));
   }
 
-  const typeList = Object.values(PokeType);
+  const typeList = Object.entries(TypeName);
   const typeListHalfLength = Math.ceil(typeList.length / 2);
   const typeListHalves = [
     typeList.slice(0, typeListHalfLength),
@@ -117,16 +117,18 @@ export default function CharacterSieveForm() {
             <Stack direction={'row'}>
               {typeListHalves.map((half, i) => (
                 <FormGroup sx={{ p: 3 }} key={i}>
-                  {half.map((type, i) => (
+                  {half.map(([value, type], i) => (
                     <FormControlLabel
                       label={type}
-                      value={type}
+                      value={value}
                       key={i}
                       control={
                         <Checkbox
-                          checked={filters.type.includes(type as PokeType)}
+                          checked={filters.type.includes(
+                            Number(value) as unknown as PokeType,
+                          )}
                           onChange={(e) =>
-                            onFilterChange('type', e.target.valueAsNumber)
+                            onFilterChange('type', Number(e.target.value))
                           }
                           size={'small'}
                         />

@@ -51,7 +51,6 @@ export default function CharacterForm() {
               color={token}
               fullWidth={true}
               error={!!errors.universe}>
-              <MenuItem>None</MenuItem>
               {Object.values(Universe).map((universe) => (
                 <MenuItem value={universe} key={universe}>
                   {universe}

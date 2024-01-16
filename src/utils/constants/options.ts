@@ -5,7 +5,10 @@ import { calculateBST } from '../functions';
 export const SortProperties: SortProperty[] = [
   { label: 'Default', identifiers: [] },
   { label: 'Name', identifiers: [(c) => c.name] },
-  { label: 'Type', identifiers: [(c) => ('type1' in c ? c.type1 : null)] },
+  {
+    label: 'Type',
+    identifiers: [(c) => ('type1' in c ? c.type1 : null)],
+  },
   {
     label: 'Universe',
     identifiers: [(c) => ('universe' in c ? c.universe : null)],

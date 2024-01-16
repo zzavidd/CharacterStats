@@ -2,11 +2,12 @@
 
 import { Add, FilterAlt } from '@mui/icons-material';
 import {
+  AppBar,
   Box,
   Button,
   Container,
-  Paper,
   Stack,
+  Toolbar,
   useMediaQuery,
   useTheme,
 } from '@mui/material';
@@ -50,7 +51,7 @@ export default function CharacterIndex({
               duration: t.transitions.duration.short,
             }),
         }}>
-        <Stack>
+        <Stack width={'100%'}>
           <CharacterControls />
           <Container maxWidth={false} disableGutters={true}>
             <Box p={4}>
@@ -89,37 +90,40 @@ function CharacterControls() {
   const matches = useMediaQuery(t.breakpoints.up('sm'));
 
   return (
-    <Paper square={true}>
-      <Stack
-        direction={'row'}
-        justifyContent={'space-between'}
-        columnGap={2}
-        p={4}>
-        <Button
-          variant={'contained'}
-          startIcon={matches ? <Add /> : null}
-          href={'/form'}
-          LinkComponent={Link}
-          sx={{ minWidth: 0 }}>
-          {matches ? 'Add Character' : <Add />}
-        </Button>
-        <Stack direction={'row'} columnGap={2}>
+    <AppBar position={'sticky'}>
+      <Toolbar>
+        <Stack
+          direction={'row'}
+          justifyContent={'space-between'}
+          columnGap={2}
+          p={4}
+          width={'100%'}>
           <Button
-            variant={'outlined'}
-            startIcon={matches ? <FilterAlt /> : null}
-            onClick={() => setDrawerOpen(!isDrawerOpen)}
+            variant={'contained'}
+            startIcon={matches ? <Add /> : null}
+            href={'/form'}
+            LinkComponent={Link}
             sx={{ minWidth: 0 }}>
-            {matches ? 'Sieve' : <FilterAlt />}
+            {matches ? 'Add Character' : <Add />}
           </Button>
-          <SearchField
-            value={searchTerm}
-            onChange={setSearchTerm}
-            placeholder={matches ? 'Search for a character...' : 'Search...'}
-            sx={matches ? { minWidth: (t) => t.spacing(12) } : undefined}
-          />
+          <Stack direction={'row'} columnGap={2}>
+            <Button
+              variant={'outlined'}
+              startIcon={matches ? <FilterAlt /> : null}
+              onClick={() => setDrawerOpen(!isDrawerOpen)}
+              sx={{ minWidth: 0 }}>
+              {matches ? 'Sieve' : <FilterAlt />}
+            </Button>
+            <SearchField
+              value={searchTerm}
+              onChange={setSearchTerm}
+              placeholder={matches ? 'Search for a character...' : 'Search...'}
+              sx={matches ? { minWidth: (t) => t.spacing(12) } : undefined}
+            />
+          </Stack>
         </Stack>
-      </Stack>
-    </Paper>
+      </Toolbar>
+    </AppBar>
   );
 }
 
@@ -136,9 +140,13 @@ function useCharacterSieve(
   let characters = allCharacters;
 
   if (filters.type.length) {
-    characters = characters
-      .filter((c) => 'type1' in c && filters.type.includes(c.type1))
-      .filter((c) => 'type2' in c && c.type2 && filters.type.includes(c.type2));
+    characters = characters.filter((c) => {
+      if ('errors' in c) return false;
+      return (
+        filters.type.includes(c.type1) ||
+        (c.type2 && filters.type.includes(c.type2))
+      );
+    });
   }
   if (filters.universe.length) {
     characters = characters.filter(

@@ -28,7 +28,8 @@ export const palette: PaletteOptions = {
     main: indigo[100],
   },
   background: {
-    paper: 'rgb(17, 17, 17)',
+    paper: 'rgb(3, 2, 19)',
+    default: 'rgb(21, 20, 30)',
   },
   divider: 'rgba(255,255,255,0.3)',
   contrastThreshold: 4.4,
