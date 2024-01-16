@@ -3,6 +3,7 @@ import {
   Dialog,
   DialogContent,
   DialogTitle,
+  Divider,
   MenuItem,
   Paper,
   Stack,
@@ -12,9 +13,8 @@ import Grid from '@mui/material/Unstable_Grid2';
 import Fuse from 'fuse.js';
 import { bindDialog } from 'material-ui-popup-state';
 import Image from 'next/image';
-import React, { useContext, useRef, useState } from 'react';
-import AutoSizer from 'react-virtualized-auto-sizer';
-import { ListChildComponentProps, VariableSizeList } from 'react-window';
+import React, { useContext, useState } from 'react';
+import { Virtuoso } from 'react-virtuoso';
 
 import { TypeName } from 'src/utils/constants/enums';
 import AppIcon from 'src/utils/constants/icons';
@@ -23,28 +23,13 @@ import { getMenuItemSx } from 'src/utils/functions';
 
 import SearchField from './SearchField';
 
-const BASE_ROW_HEIGHT = 80;
-
 export default function MoveSelect() {
   const [searchTerm, setSearchTerm] = useState('');
   const { moves: allMoves, moveSelect } = useContext(CharacterFormContext);
   const moves = useMoveSieve(allMoves, searchTerm);
 
-  const listRef = useRef<VariableSizeList<PokeMove[]>>(null);
-
   function onSearchChange(value: string) {
-    listRef.current?.resetAfterIndex(0);
     setSearchTerm(value);
-  }
-
-  function getItemSize(i: number) {
-    const { description } = moves[i];
-    let size = BASE_ROW_HEIGHT;
-    if (description) {
-      size += 30;
-    }
-    size += (Math.floor(description?.length / 60) || 0) * 15;
-    return size;
   }
 
   return (
@@ -52,43 +37,32 @@ export default function MoveSelect() {
       {...bindDialog(moveSelect)}
       fullWidth={true}
       maxWidth={'xs'}
-      keepMounted={false}>
+      PaperProps={{ sx: { height: '100%' } }}>
       <DialogTitle>Select a move</DialogTitle>
-      <DialogContent sx={{ height: '100vh', p: 0 }} dividers={true}>
+      <Divider />
+      <DialogContent sx={{ height: '100%', p: 0 }}>
         <Paper square={true}>
           <SearchField
             value={searchTerm}
             onChange={onSearchChange}
             placeholder={'Search for a move...'}
             fullWidth={true}
+            variant={'standard'}
+            InputProps={{ disableUnderline: true, sx: { py: 1 } }}
             sx={{ p: 3 }}
           />
         </Paper>
-        <AutoSizer>
-          {({ height, width }) => (
-            <VariableSizeList
-              itemData={moves}
-              itemCount={moves.length}
-              itemKey={(i, data) => data[i].id}
-              itemSize={getItemSize}
-              estimatedItemSize={BASE_ROW_HEIGHT + 40}
-              overscanCount={30}
-              height={height}
-              width={width}
-              ref={listRef}>
-              {({ data, style, index }) => {
-                const move = data[index];
-                return <MoveOption move={move} style={style} key={move.id} />;
-              }}
-            </VariableSizeList>
-          )}
-        </AutoSizer>
+        <Virtuoso
+          data={moves}
+          totalCount={moves.length}
+          itemContent={(i) => <MoveOption move={moves[i]} key={moves[i].id} />}
+        />
       </DialogContent>
     </Dialog>
   );
 }
 
-const MoveOption = React.memo<MoveOptionProps>(({ move, style }) => {
+const MoveOption = React.memo<MoveOptionProps>(({ move }) => {
   const { learnsetMethods, moveSelect } = useContext(CharacterFormContext);
   const { prepend } = learnsetMethods;
 
@@ -101,7 +75,6 @@ const MoveOption = React.memo<MoveOptionProps>(({ move, style }) => {
     <MenuItem
       onClick={onSelect}
       value={move.id}
-      style={style}
       sx={getMenuItemSx(move.type)}
       key={move.id}>
       <Stack
@@ -172,6 +145,6 @@ function useMoveSieve(allMoves: PokeMoveMap, searchTerm: string) {
   return moves;
 }
 
-interface MoveOptionProps extends Pick<ListChildComponentProps, 'style'> {
+interface MoveOptionProps {
   move: PokeMove;
 }

@@ -1,6 +1,7 @@
 import { SxProps, Theme, alpha } from '@mui/material';
 import Papa from 'papaparse';
 import { z } from 'zod';
+
 import { PokeType, TypeName } from '../constants/enums';
 
 export { default as getAbilities } from './abilities';
@@ -16,7 +17,7 @@ export function calculateBST(stats: Stats): number {
   }, 0);
 }
 
-export async function getSource<T extends {}>(
+export async function getSource<T extends Record<string, any>>(
   source: string,
   validator: z.ZodObject<T>,
 ): Promise<z.infer<z.ZodObject<T>>[]> {
@@ -35,5 +36,6 @@ export function getMenuItemSx(type: PokeType): SxProps<Theme> {
     '&:hover': {
       backgroundColor: (t) => t.palette[TypeName[type]].main,
     },
+    'py': 4,
   };
 }
