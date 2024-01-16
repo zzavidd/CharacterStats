@@ -1,7 +1,15 @@
 'use client';
 
 import { Add, FilterAlt } from '@mui/icons-material';
-import { Box, Button, Container, Stack } from '@mui/material';
+import {
+  Box,
+  Button,
+  Container,
+  Paper,
+  Stack,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import Fuse from 'fuse.js';
 import { orderBy } from 'natural-orderby';
@@ -42,28 +50,30 @@ export default function CharacterIndex({
               duration: t.transitions.duration.short,
             }),
         }}>
-        <Container maxWidth={false} disableGutters={true}>
-          <Box p={4}>
-            <Stack rowGap={3}>
-              <CharacterControls />
-              <Grid
-                container={true}
-                columns={{
-                  xs: 1,
-                  sm: columnBase + 1,
-                  md: columnBase + 2,
-                  lg: columnBase + 3,
-                  xl: columnBase + 4,
-                  xxl: columnBase + 5,
-                }}
-                spacing={3}>
-                {characters.map((c) => (
-                  <CharacterEntry character={c} key={c.id} />
-                ))}
-              </Grid>
-            </Stack>
-          </Box>
-        </Container>
+        <Stack>
+          <CharacterControls />
+          <Container maxWidth={false} disableGutters={true}>
+            <Box p={4}>
+              <Stack rowGap={3}>
+                <Grid
+                  container={true}
+                  columns={{
+                    xs: 1,
+                    sm: columnBase + 1,
+                    md: columnBase + 2,
+                    lg: columnBase + 3,
+                    xl: columnBase + 4,
+                    xxl: columnBase + 5,
+                  }}
+                  spacing={3}>
+                  {characters.map((c) => (
+                    <CharacterEntry character={c} key={c.id} />
+                  ))}
+                </Grid>
+              </Stack>
+            </Box>
+          </Container>
+        </Stack>
         <CharacterSieveForm />
       </Stack>
     </CharacterContext.Provider>
@@ -74,30 +84,42 @@ function CharacterControls() {
   const { useDrawer, useSearchTerm } = useContext(CharacterContext);
   const [isDrawerOpen, setDrawerOpen] = useDrawer;
   const [searchTerm, setSearchTerm] = useSearchTerm;
+
+  const t = useTheme();
+  const matches = useMediaQuery(t.breakpoints.up('sm'));
+
   return (
-    <Stack direction={'row'} justifyContent={'space-between'}>
-      <Button
-        variant={'contained'}
-        startIcon={<Add />}
-        href={'/form'}
-        LinkComponent={Link}>
-        Add Character
-      </Button>
-      <Stack direction={'row'} columnGap={2}>
+    <Paper square={true}>
+      <Stack
+        direction={'row'}
+        justifyContent={'space-between'}
+        columnGap={2}
+        p={4}>
         <Button
-          variant={'outlined'}
-          startIcon={<FilterAlt />}
-          onClick={() => setDrawerOpen(!isDrawerOpen)}>
-          Categorise
+          variant={'contained'}
+          startIcon={matches ? <Add /> : null}
+          href={'/form'}
+          LinkComponent={Link}
+          sx={{ minWidth: 0 }}>
+          {matches ? 'Add Character' : <Add />}
         </Button>
-        <SearchField
-          value={searchTerm}
-          onChange={setSearchTerm}
-          placeholder={'Search for a character...'}
-          sx={{ minWidth: (t) => t.spacing(12) }}
-        />
+        <Stack direction={'row'} columnGap={2}>
+          <Button
+            variant={'outlined'}
+            startIcon={matches ? <FilterAlt /> : null}
+            onClick={() => setDrawerOpen(!isDrawerOpen)}
+            sx={{ minWidth: 0 }}>
+            {matches ? 'Sieve' : <FilterAlt />}
+          </Button>
+          <SearchField
+            value={searchTerm}
+            onChange={setSearchTerm}
+            placeholder={matches ? 'Search for a character...' : 'Search...'}
+            sx={matches ? { minWidth: (t) => t.spacing(12) } : undefined}
+          />
+        </Stack>
       </Stack>
-    </Stack>
+    </Paper>
   );
 }
 
