@@ -12,12 +12,14 @@ import {
   useTheme,
 } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
+import { getDocs } from 'firebase/firestore';
 import Fuse from 'fuse.js';
 import { orderBy } from 'natural-orderby';
 import Link from 'next/link';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 import SearchField from 'src/components/SearchField';
+import { characterCollectionRef } from 'src/utils/client/firebase';
 import { SortProperties } from 'src/utils/constants/options';
 import { CharacterContext } from 'src/utils/contexts';
 import { useAppSelector } from 'src/utils/reducers';
@@ -26,7 +28,6 @@ import CharacterEntry from './CharacterEntry';
 import CharacterSieveForm, { SIEVE_FORM_WIDTH } from './CharacterSieveForm';
 
 export default function CharacterIndex({
-  characters: allCharacters,
   abilities,
   types,
 }: CharacterIndexProps) {
@@ -36,7 +37,7 @@ export default function CharacterIndex({
   const [isDrawerOpen] = useDrawer;
   const [searchTerm] = useSearchTerm;
 
-  const characters = useCharacterSieve(allCharacters, searchTerm);
+  const characters = useCharacterSieve(searchTerm);
 
   const columnBase = isDrawerOpen ? 0 : 1;
   return (
@@ -128,15 +129,26 @@ function CharacterControls() {
 }
 
 function useCharacterSieve(
-  allCharacters: (Character | CharacterWithErrors)[],
   searchTerm: string,
 ): (Character | CharacterWithErrors)[] {
+  const [allCharacters, setAllCharacters] = useState<
+    (Character | CharacterWithErrors)[]
+  >([]);
   const filters = useAppSelector((s) => s.filters);
   const propertyIndex = useAppSelector((s) => s.sort.property);
   const order = useAppSelector((s) => s.sort.order);
 
-  const { identifiers } = SortProperties[propertyIndex];
+  useEffect(() => {
+    (async () => {
+      const query = await getDocs(characterCollectionRef);
+      const data = query.docs.map((doc) => doc.data());
+      setAllCharacters(data);
+    })();
+  }, []);
 
+  if (!allCharacters.length) return allCharacters;
+
+  const { identifiers } = SortProperties[propertyIndex];
   let characters = allCharacters;
 
   if (filters.type.length) {
@@ -170,7 +182,6 @@ function useCharacterSieve(
 }
 
 interface CharacterIndexProps {
-  characters: (Character | CharacterWithErrors)[];
   abilities: PokeAbilityMap;
   types: PokeTypeMap;
 }
