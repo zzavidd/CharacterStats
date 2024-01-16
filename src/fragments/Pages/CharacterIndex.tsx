@@ -44,7 +44,7 @@ export default function CharacterIndex({
       value={{ abilities, moves: {}, types, useDrawer, useSearchTerm }}>
       <Stack
         direction={'row'}
-        pr={isDrawerOpen ? SIEVE_FORM_WIDTH : 0}
+        pr={{ sm: isDrawerOpen ? SIEVE_FORM_WIDTH : 0 }}
         sx={{
           transition: (t) =>
             t.transitions.create(['all'], {

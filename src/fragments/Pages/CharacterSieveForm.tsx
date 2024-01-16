@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Checkbox,
   Drawer,
   FormControlLabel,
@@ -10,6 +11,8 @@ import {
   RadioGroup,
   Stack,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import { Order } from 'natural-orderby';
 import { useContext } from 'react';
@@ -31,7 +34,9 @@ export default function CharacterSieveForm() {
   const filters = useAppSelector((s) => s.filters);
   const dispatch = useAppDispatch();
 
-  const [isDrawerOpen] = useDrawer;
+  const [isDrawerOpen, setDrawerOpen] = useDrawer;
+  const t = useTheme();
+  const matches = useMediaQuery(t.breakpoints.up('sm'));
 
   function onFilterChange<T extends keyof AppState['filters']>(
     key: T,
@@ -61,12 +66,13 @@ export default function CharacterSieveForm() {
     universeList.slice(0, universeListHalfLength),
     universeList.slice(universeListHalfLength),
   ];
+
   return (
     <Drawer
       open={isDrawerOpen}
-      variant={'persistent'}
-      anchor={'right'}
-      PaperProps={{ sx: { width: SIEVE_FORM_WIDTH } }}>
+      variant={matches ? 'persistent' : 'temporary'}
+      anchor={matches ? 'right' : 'top'}
+      PaperProps={{ sx: { width: matches ? SIEVE_FORM_WIDTH : '100%' } }}>
       <Stack
         sx={{
           borderLeft: (t) => `1px solid ${t.palette.divider}`,
@@ -76,38 +82,49 @@ export default function CharacterSieveForm() {
           minWidth: (t) => t.spacing(12),
           overflowY: 'auto',
         }}>
-        <Paper square={true}>
-          <Typography variant={'h2'} p={4}>
-            Categorise
-          </Typography>
+        <Paper
+          elevation={3}
+          square={true}
+          sx={{ top: 0, position: 'sticky', zIndex: (t) => t.zIndex.appBar }}>
+          <Stack
+            direction={'row'}
+            justifyContent={'space-between'}
+            alignItems={'center'}
+            p={2}
+            columnGap={3}>
+            <Typography variant={'h2'} px={3} py={3} textAlign={'center'}>
+              Filter & Sort Characters
+            </Typography>
+            <Box>
+              <Button variant={'outlined'} onClick={() => setDrawerOpen(false)}>
+                Close
+              </Button>
+            </Box>
+          </Stack>
         </Paper>
         <Stack>
           <Box>
             <FieldHeader>Sort Property:</FieldHeader>
-            <RadioGroup sx={{ p: 3 }}>
+            <RadioGroup sx={{ p: 3, width: '100%' }}>
               {SortProperties.map(({ label }, i) => (
                 <FormControlLabel
                   label={label}
                   value={i}
                   key={i}
-                  control={
-                    <Radio onChange={onSortPropertyChange} size={'small'} />
-                  }
+                  control={<Radio onChange={onSortPropertyChange} />}
                 />
               ))}
             </RadioGroup>
           </Box>
           <Box>
             <FieldHeader>Sort Order:</FieldHeader>
-            <RadioGroup sx={{ p: 3 }}>
+            <RadioGroup sx={{ p: 3, width: '100%' }}>
               {SortOrders.map(({ label, order }, i) => (
                 <FormControlLabel
                   label={label}
                   value={order}
                   key={i}
-                  control={
-                    <Radio onChange={onSortOrderChange} size={'small'} />
-                  }
+                  control={<Radio onChange={onSortOrderChange} />}
                 />
               ))}
             </RadioGroup>
@@ -116,7 +133,7 @@ export default function CharacterSieveForm() {
             <FieldHeader>Filter by Type:</FieldHeader>
             <Stack direction={'row'}>
               {typeListHalves.map((half, i) => (
-                <FormGroup sx={{ p: 3 }} key={i}>
+                <FormGroup sx={{ p: 3, width: '100%' }} key={i}>
                   {half.map(([value, type], i) => (
                     <FormControlLabel
                       label={type}
@@ -130,7 +147,6 @@ export default function CharacterSieveForm() {
                           onChange={(e) =>
                             onFilterChange('type', Number(e.target.value))
                           }
-                          size={'small'}
                         />
                       }
                     />
@@ -143,7 +159,7 @@ export default function CharacterSieveForm() {
             <FieldHeader>Filter by Universe:</FieldHeader>
             <Stack direction={'row'}>
               {universeListHalves.map((half, i) => (
-                <FormGroup sx={{ p: 3 }} key={i}>
+                <FormGroup sx={{ p: 3, width: '100%' }} key={i}>
                   {half.map((universe, i) => (
                     <FormControlLabel
                       label={universe}
@@ -158,7 +174,6 @@ export default function CharacterSieveForm() {
                               e.target.value as Universe,
                             )
                           }
-                          size={'small'}
                         />
                       }
                     />
