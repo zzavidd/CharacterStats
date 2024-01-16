@@ -1,4 +1,4 @@
-import { MoreVert } from '@mui/icons-material';
+import { Delete, Edit, MoreVert } from '@mui/icons-material';
 import {
   Box,
   Button,
@@ -9,6 +9,8 @@ import {
   DialogTitle,
   Divider,
   IconButton,
+  ListItemIcon,
+  ListItemText,
   Menu,
   MenuItem,
   Stack,
@@ -31,6 +33,7 @@ import { StatMap } from 'src/utils/constants/defaults';
 import { Stat, TypeName } from 'src/utils/constants/enums';
 import AppIcon from 'src/utils/constants/icons';
 import { CharacterContext, CharacterEntryContext } from 'src/utils/contexts';
+import { calculateBST } from 'src/utils/functions';
 
 const CharacterEntry = React.memo<{
   character: Character | CharacterWithErrors;
@@ -116,7 +119,13 @@ const CharacterEntry = React.memo<{
               ))}
             </Stack>
           </Stack>
-          <Stack direction={'row'} justifyContent={'flex-end'}>
+          <Stack
+            direction={'row'}
+            justifyContent={'space-between'}
+            alignItems={'center'}>
+            <Typography fontSize={'90%'} fontWeight={500}>
+              BST: {calculateBST(c.stats)}
+            </Typography>
             <IconButton size={'small'} {...bindTrigger(characterMenu)}>
               <MoreVert />
             </IconButton>
@@ -155,13 +164,28 @@ function CharacterMenu() {
     characterDeleteDialog.open();
   }
 
+  const menuItems = [
+    { label: 'Edit', onClick: onEdit, Icon: Edit },
+    { label: 'Delete', onClick: onDelete, Icon: Delete },
+  ];
+
   return (
     <React.Fragment>
       <Menu
         {...bindMenu(characterMenu)}
+        MenuListProps={{ disablePadding: true }}
         slotProps={{ paper: { sx: { minWidth: (t) => t.spacing(10) } } }}>
-        <MenuItem onClick={onEdit}>Edit</MenuItem>
-        <MenuItem onClick={onDelete}>Delete</MenuItem>
+        {menuItems.map(({ label, onClick, Icon }) => (
+          <MenuItem onClick={onClick} sx={{ py: 4 }} key={label}>
+            <ListItemIcon>
+              <Icon />
+            </ListItemIcon>
+            <ListItemText primaryTypographyProps={{ fontSize: '120%' }}>
+              {label}
+            </ListItemText>
+            <ListItemIcon></ListItemIcon>
+          </MenuItem>
+        ))}
       </Menu>
       <Dialog {...bindDialog(characterDeleteDialog)}>
         <DialogTitle>Delete character</DialogTitle>

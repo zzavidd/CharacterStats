@@ -1,5 +1,5 @@
 import { capitalCase } from 'change-case';
-import { getSource } from '.';
+
 import { PokeType } from '../constants/enums';
 import {
   V2_ABILITIES,
@@ -11,6 +11,8 @@ import {
   zPokemonAbilitiesResponse,
   zPokemonTypesResponse,
 } from '../constants/sources';
+
+import { getSource } from '.';
 
 export default async function getAbilities(): Promise<PokeAbilityMap> {
   const [v2a, v2b, v2c, v2d] = await Promise.all([
@@ -41,7 +43,9 @@ export default async function getAbilities(): Promise<PokeAbilityMap> {
     .reduce<Record<number, string>>(
       (acc, a) => ({
         ...acc,
-        [a.ability_id]: a.flavor_text.replaceAll('\n', ' '),
+        [a.ability_id]: a.flavor_text
+          .replaceAll('\n', ' ')
+          .replaceAll('Pokémon', 'character'),
       }),
       {},
     );

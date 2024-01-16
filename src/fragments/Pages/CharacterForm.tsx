@@ -3,11 +3,13 @@
 import {
   FormControl,
   FormHelperText,
+  FormLabel,
   InputLabel,
   MenuItem,
   Select,
   Stack,
   TextField,
+  Typography,
 } from '@mui/material';
 import { Controller, useFormContext } from 'react-hook-form';
 
@@ -18,6 +20,7 @@ import MoveSelect from 'src/components/MoveSelect';
 import TypeField from 'src/components/TypeField';
 import { StatMap } from 'src/utils/constants/defaults';
 import { Stat, Universe } from 'src/utils/constants/enums';
+import { calculateBST } from 'src/utils/functions';
 import { useTypeColorToken } from 'src/utils/hooks';
 
 export default function CharacterForm() {
@@ -25,6 +28,7 @@ export default function CharacterForm() {
     control,
     formState: { errors },
     register,
+    watch,
   } = useFormContext<CharacterInput>();
   const { token } = useTypeColorToken();
 
@@ -74,20 +78,28 @@ export default function CharacterForm() {
       <Stack direction={'row'} columnGap={2}>
         <AbilityField name={'abilityX'} label={'Hidden Ability:'} />
       </Stack>
-      <Stack direction={'row'} columnGap={2}>
-        {Object.values(Stat).map((stat) => (
-          <TextField
-            {...register(`stats.${stat}`, {
-              valueAsNumber: true,
-              validate: (v) => v > 0,
-            })}
-            color={token}
-            label={StatMap[stat]}
-            error={!!errors.stats?.[stat]}
-            helperText={errors.stats?.[stat]?.message}
-            key={stat}
-          />
-        ))}
+      <Stack rowGap={4}>
+        <FormLabel>Stats:</FormLabel>
+        <Stack rowGap={2}>
+          <Stack direction={'row'} columnGap={2}>
+            {Object.values(Stat).map((stat) => (
+              <TextField
+                {...register(`stats.${stat}`, {
+                  valueAsNumber: true,
+                  validate: (v) => v > 0,
+                })}
+                color={token}
+                label={StatMap[stat]}
+                error={!!errors.stats?.[stat]}
+                helperText={errors.stats?.[stat]?.message}
+                key={stat}
+              />
+            ))}
+          </Stack>
+          <Typography color={'text.secondary'} fontSize={'80%'}>
+            BST: {calculateBST(watch('stats'))}
+          </Typography>
+        </Stack>
       </Stack>
       <LearnsetBlock />
       <AbilitySelect />

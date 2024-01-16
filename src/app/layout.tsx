@@ -1,3 +1,5 @@
+import { Metadata, Viewport } from 'next';
+
 import CSProvider from 'src/fragments/Providers/CSProvider';
 
 export default function RootLayout({ children }: React.PropsWithChildren) {
@@ -10,6 +12,13 @@ export default function RootLayout({ children }: React.PropsWithChildren) {
   );
 }
 
-export const metadata = {
+export const metadata: Metadata = {
   title: 'Character Stats',
+};
+
+export const viewport: Viewport = {
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: true,
+  width: 'device-width',
 };
