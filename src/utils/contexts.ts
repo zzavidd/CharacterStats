@@ -29,6 +29,7 @@ export interface CharacterEntryContextProps {
 export interface CharacterFormContextProps extends CharacterFormProps {
   abilitySelect: PopupState;
   moveSelect: PopupState;
+  spreadMoveDialog: PopupState;
   learnsetMethods: UseFieldArrayReturn<CharacterInput>;
   formSettings: FormSettings;
   useAbilityField: ReactUseState<AbilityKey | null>;

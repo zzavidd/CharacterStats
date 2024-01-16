@@ -11,6 +11,10 @@ export const zStats = z.object({
   [Stat.SPDEF]: zStat,
   [Stat.SPEED]: zStat,
 });
+export const zLearnset = z.record(z.coerce.number(), z.number().array());
+export const zLearnsetInput = z
+  .object({ level: z.number().min(0).max(100), moveId: z.number() })
+  .array();
 
 export const zCharacter = z.object({
   id: z.string().optional(),
@@ -22,7 +26,7 @@ export const zCharacter = z.object({
   ability2: z.number().nullable(),
   abilityX: z.number().nullable(),
   stats: zStats,
-  learnset: z.record(z.coerce.number(), z.number().array()),
+  learnset: zLearnset,
   lastModified: z.number(),
   createTime: z.number(),
 });
@@ -41,9 +45,7 @@ export const zCharacterWithErrors = zCharacter
 export const zCharacterInput = zCharacter.extend({
   type1: z.nativeEnum(PokeType).optional(),
   universe: z.nativeEnum(Universe),
-  learnset: z
-    .object({ level: z.number().min(0).max(100), moveId: z.number() })
-    .array(),
+  learnset: zLearnsetInput,
   lastModified: z.number().optional(),
   createTime: z.number().optional(),
 });

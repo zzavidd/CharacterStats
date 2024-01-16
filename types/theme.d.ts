@@ -13,6 +13,9 @@ declare module '@mui/material/styles' {
 declare module '@mui/material/Button' {
   interface ButtonPropsColorOverrides extends ColorOverrides<true> {}
 }
+declare module '@mui/material/ButtonGroup' {
+  interface ButtonGroupPropsColorOverrides extends ColorOverrides<true> {}
+}
 declare module '@mui/material/InputBase' {
   interface InputBasePropsColorOverrides extends ColorOverrides<true> {}
 }

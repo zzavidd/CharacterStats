@@ -6,6 +6,8 @@ import type {
   zCharacter,
   zCharacterInput,
   zCharacterWithErrors,
+  zLearnset,
+  zLearnsetInput,
   zStats,
 } from 'src/utils/validators';
 
@@ -13,6 +15,8 @@ declare global {
   export type Character = z.infer<typeof zCharacter>;
   export type CharacterWithErrors = z.infer<typeof zCharacterWithErrors>;
   export type CharacterInput = z.infer<typeof zCharacterInput>;
+  export type Learnset = z.infer<typeof zLearnset>;
+  export type LearnsetInput = z.infer<typeof zLearnsetInput>;
   export type Stats = z.infer<typeof zStats>;
 
   export type ReactDispatch<T> = Dispatch<SetStateAction<T>>;

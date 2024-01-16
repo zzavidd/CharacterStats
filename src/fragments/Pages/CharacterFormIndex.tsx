@@ -30,6 +30,7 @@ import {
   CharacterFormContext,
   CharacterFormContextProps,
 } from 'src/utils/contexts';
+import { convertLearnsetToInput } from 'src/utils/functions';
 import { useTypeColorToken } from 'src/utils/hooks';
 import { zCharacterInput } from 'src/utils/validators';
 
@@ -55,6 +56,7 @@ export default function CharacterFormIndex({
   });
   const abilitySelect = usePopupState({ variant: 'dialog' });
   const moveSelect = usePopupState({ variant: 'dialog' });
+  const spreadMoveDialog = usePopupState({ variant: 'dialog' });
   const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
 
@@ -69,9 +71,7 @@ export default function CharacterFormIndex({
         const data = snapshot.data();
         character = {
           ...data,
-          learnset: Object.entries(data.learnset).flatMap(([level, moveIds]) =>
-            moveIds.map((moveId) => ({ level: Number(level), moveId })),
-          ),
+          learnset: convertLearnsetToInput(data.learnset),
         };
         for (const key of Object.keys(character)) {
           formMethods.setValue(key as keyof CharacterInput, character[key], {
@@ -114,6 +114,7 @@ export default function CharacterFormIndex({
     types,
     learnsetMethods,
     formSettings,
+    spreadMoveDialog,
   };
 
   return (

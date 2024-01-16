@@ -17,6 +17,18 @@ export function calculateBST(stats: Stats): number {
   }, 0);
 }
 
+export function convertInputToLearnset(learnsetInput: LearnsetInput): Learnset {
+  return learnsetInput.reduce<Learnset>((acc, a) => {
+    return { ...acc, [a.level]: [...(acc[a.level] || []), a.moveId] };
+  }, {});
+}
+
+export function convertLearnsetToInput(learnset: Learnset): LearnsetInput {
+  return Object.entries(learnset).flatMap(([level, moveIds]) =>
+    moveIds.map((moveId) => ({ level: Number(level), moveId })),
+  );
+}
+
 export async function getSource<T extends Record<string, any>>(
   source: string,
   validator: z.ZodObject<T>,
@@ -38,4 +50,38 @@ export function getMenuItemSx(type: PokeType): SxProps<Theme> {
     },
     'py': 4,
   };
+}
+
+export function spreadMoves(
+  learnsetInput: LearnsetInput,
+  maxLevel: number,
+): LearnsetInput {
+  const min = 2;
+  const max = Math.min(maxLevel, 100);
+
+  const learnset = convertInputToLearnset(learnsetInput);
+  delete learnset['0'];
+  const moveCount = Object.keys(learnset).length;
+
+  const deviation = (max - min) / moveCount;
+
+  let currentLevel = 1;
+  const newLearnset = Object.entries(learnset).flatMap(([key, moveIds]) => {
+    const level = Number(key);
+    if (level === 1) {
+      return moveIds.map((moveId) => ({ level, moveId }));
+    }
+
+    const coefficient = deviation - Math.floor(deviation);
+    const interval =
+      Math.random() < coefficient
+        ? Math.floor(deviation)
+        : Math.ceil(deviation);
+    currentLevel += interval;
+    const newLevel = Math.min(currentLevel, max);
+
+    return moveIds.map((moveId) => ({ level: newLevel, moveId }));
+  });
+
+  return newLearnset;
 }

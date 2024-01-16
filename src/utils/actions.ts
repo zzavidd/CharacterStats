@@ -9,10 +9,10 @@ import {
 } from 'src/utils/client/firebase';
 import { PokeType } from 'src/utils/constants/enums';
 
+import { convertInputToLearnset } from './functions';
+
 export async function addCharacter(c: CharacterInput): Promise<void> {
-  const learnset = c.learnset.reduce<Character['learnset']>((acc, a) => {
-    return { ...acc, [a.level]: [...(acc[a.level] || []), a.moveId] };
-  }, {});
+  const learnset = convertInputToLearnset(c.learnset);
   await addDoc(characterCollectionRef, {
     ...c,
     type1: c.type1 ?? PokeType.UNKNOWN,
@@ -25,9 +25,7 @@ export async function addCharacter(c: CharacterInput): Promise<void> {
 export async function updateCharacter(c: CharacterInput): Promise<void> {
   invariant(c.id, 'Character has no assigned ID.');
 
-  const learnset = c.learnset.reduce<Character['learnset']>((acc, a) => {
-    return { ...acc, [a.level]: [...(acc[a.level] || []), a.moveId] };
-  }, {});
+  const learnset = convertInputToLearnset(c.learnset);
   await setDoc(characterDocumentRef(c.id), {
     ...c,
     learnset,
