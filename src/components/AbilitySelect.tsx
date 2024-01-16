@@ -92,7 +92,7 @@ const AbilityOption = React.memo<AbilityOptionProps>(
           />
           <Stack>
             <Typography>{name}</Typography>
-            <Typography variant={'body2'} sx={{ textWrap: 'wrap' }}>
+            <Typography variant={'body2'} sx={{ whiteSpace: 'pre-wrap' }}>
               {description}
             </Typography>
           </Stack>

@@ -34,44 +34,47 @@ export default function CharacterForm() {
 
   return (
     <Stack rowGap={4}>
-      <TextField
-        {...register('name')}
-        label={'Name:'}
-        color={token}
-        placeholder={'Enter character name...'}
-        error={!!errors.name}
-        helperText={errors.name?.message}
-        InputLabelProps={{ shrink: true }}
-      />
-      <FormControl>
-        <InputLabel>Universe:</InputLabel>
-        <Controller
-          control={control}
-          name={'universe'}
-          render={({ field }) => (
-            <Select
-              {...field}
-              label={'Universe:'}
-              color={token}
-              fullWidth={true}
-              error={!!errors.universe}>
-              {Object.values(Universe).map((universe) => (
-                <MenuItem value={universe} key={universe}>
-                  {universe}
-                </MenuItem>
-              ))}
-            </Select>
-          )}
+      <Stack direction={'row'} columnGap={2}>
+        <TextField
+          {...register('name')}
+          label={'Name:'}
+          color={token}
+          placeholder={'Enter character name...'}
+          error={!!errors.name}
+          helperText={errors.name?.message}
+          InputLabelProps={{ shrink: true }}
+          fullWidth={true}
         />
-        {errors.universe ? (
-          <FormHelperText>{errors.universe?.message}</FormHelperText>
-        ) : null}
-      </FormControl>
+        <FormControl fullWidth={true}>
+          <InputLabel>Universe:</InputLabel>
+          <Controller
+            control={control}
+            name={'universe'}
+            render={({ field }) => (
+              <Select
+                {...field}
+                label={'Universe:'}
+                color={token}
+                fullWidth={true}
+                error={!!errors.universe}>
+                {Object.values(Universe).map((universe) => (
+                  <MenuItem value={universe} key={universe}>
+                    {universe}
+                  </MenuItem>
+                ))}
+              </Select>
+            )}
+          />
+          {errors.universe ? (
+            <FormHelperText>{errors.universe?.message}</FormHelperText>
+          ) : null}
+        </FormControl>
+      </Stack>
       <Stack direction={'row'} columnGap={2}>
         <TypeField name={'type1'} label={'Type 1:'} />
         <TypeField name={'type2'} label={'Type 2:'} />
       </Stack>
-      <Stack direction={'row'} columnGap={2}>
+      <Stack direction={{ xs: 'column', md: 'row' }} rowGap={4} columnGap={2}>
         <AbilityField name={'ability1'} label={'Ability 1:'} />
         <AbilityField name={'ability2'} label={'Ability 2:'} />
       </Stack>

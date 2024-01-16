@@ -94,7 +94,7 @@ const MoveOption = React.memo<MoveOptionProps>(({ move }) => {
           <Typography variant={'h6'}>{move.name}</Typography>
           <Stack rowGap={2}>
             {move.description ? (
-              <Typography variant={'body2'} sx={{ textWrap: 'wrap' }}>
+              <Typography variant={'body2'} sx={{ whiteSpace: 'pre-wrap' }}>
                 {move.description}
               </Typography>
             ) : null}
