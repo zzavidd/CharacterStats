@@ -23,6 +23,10 @@ declare module '@mui/material/TextField' {
   interface TextFieldPropsColorOverrides extends ColorOverrides<true> {}
 }
 
+declare module '@mui/base' {
+  interface NumberInputPropsColorOverrides extends ColorOverrides<true> {}
+}
+
 interface ColorOverrides<T> {
   Normal: T;
   Fighting: T;

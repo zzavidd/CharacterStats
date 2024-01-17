@@ -32,12 +32,19 @@ export default function MoveSelect() {
     setSearchTerm(value);
   }
 
+  function onClose() {
+    setSearchTerm('');
+    moveSelect.close();
+  }
+
   return (
     <Dialog
       {...bindDialog(moveSelect)}
       fullWidth={true}
       maxWidth={'xs'}
-      PaperProps={{ sx: { height: '100%' } }}>
+      onClose={onClose}
+      PaperProps={{ sx: { height: '100%' } }}
+      disableRestoreFocus={true}>
       <DialogTitle>Select a move</DialogTitle>
       <Divider />
       <DialogContent sx={{ height: '100%', p: 0 }}>
@@ -50,6 +57,7 @@ export default function MoveSelect() {
             variant={'standard'}
             InputProps={{ disableUnderline: true, sx: { py: 1 } }}
             sx={{ p: 3 }}
+            autoFocus={true}
           />
         </Paper>
         <Virtuoso

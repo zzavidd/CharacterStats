@@ -62,7 +62,6 @@ export default function LearnsetBlock() {
                 valueAsNumber: true,
                 validate: (v) => v >= 0 && v <= 100,
               })}
-              type={'number'}
               onBlur={() => {
                 setValue(
                   'learnset',
@@ -78,6 +77,8 @@ export default function LearnsetBlock() {
                   </InputAdornment>
                 ),
               }}
+              inputMode={'numeric'}
+              onFocus={(e) => e.target.select()}
               error={!!errors.learnset?.[index]?.level}
               helperText={errors.learnset?.[index]?.level?.message}
             />
@@ -104,17 +105,24 @@ function SpreadMoveDialog() {
   const { token } = useTypeColorToken();
 
   return (
-    <Dialog {...bindDialog(spreadMoveDialog)} fullWidth={true} maxWidth={'xs'}>
+    <Dialog
+      {...bindDialog(spreadMoveDialog)}
+      fullWidth={true}
+      maxWidth={'xs'}
+      disableRestoreFocus={true}>
       <DialogTitle>Spread moves</DialogTitle>
       <DialogContent dividers={true}>
         <Stack rowGap={4}>
           <Typography>Set the maximum level for distribution:</Typography>
           <TextField
-            type={'number'}
             value={maxLevel}
             onChange={(e) => setMaxLevel(Number(e.target.value))}
             label={'Max Level:'}
             placeholder={'Enter the maximum level:'}
+            autoFocus={true}
+            inputMode={'numeric'}
+            inputProps={{ pattern: '[0-9]+' }}
+            onFocus={(e) => e.target.select()}
           />
         </Stack>
       </DialogContent>

@@ -91,8 +91,10 @@ export default function CharacterForm() {
                   valueAsNumber: true,
                   validate: (v) => v > 0,
                 })}
-                color={token}
                 label={StatMap[stat]}
+                color={token}
+                inputMode={'numeric'}
+                onFocus={(e) => e.target.select()}
                 error={!!errors.stats?.[stat]}
                 helperText={errors.stats?.[stat]?.message}
                 key={stat}

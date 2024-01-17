@@ -32,12 +32,19 @@ export default function AbilitySelect() {
     setSearchTerm(value);
   }
 
+  function onClose() {
+    setSearchTerm('');
+    abilitySelect.close();
+  }
+
   return (
     <Dialog
       {...bindDialog(abilitySelect)}
       fullWidth={true}
       maxWidth={'xs'}
-      PaperProps={{ sx: { height: '100%' } }}>
+      PaperProps={{ sx: { height: '100%' } }}
+      onClose={onClose}
+      disableRestoreFocus={true}>
       <DialogTitle>Select an ability</DialogTitle>
       <Divider />
       <DialogContent sx={{ height: '100%', p: 0 }}>
@@ -50,6 +57,7 @@ export default function AbilitySelect() {
             variant={'standard'}
             InputProps={{ disableUnderline: true, sx: { py: 1 } }}
             sx={{ p: 3 }}
+            autoFocus={true}
           />
         </Paper>
         <Virtuoso
