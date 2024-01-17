@@ -44,6 +44,7 @@ export default function MoveSelect() {
       maxWidth={'xs'}
       onClose={onClose}
       PaperProps={{ sx: { height: '100%' } }}
+      TransitionProps={{ onExited: () => setSearchTerm('') }}
       disableRestoreFocus={true}>
       <DialogTitle>Select a move</DialogTitle>
       <Divider />
@@ -75,7 +76,7 @@ const MoveOption = React.memo<MoveOptionProps>(({ move }) => {
   const { prepend } = learnsetMethods;
 
   function onSelect() {
-    prepend({ level: 0, moveId: move.id });
+    prepend({ level: 0, moveId: move.id }, { shouldFocus: false });
     moveSelect.close();
   }
 

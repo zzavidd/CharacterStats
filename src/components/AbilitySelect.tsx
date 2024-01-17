@@ -31,19 +31,13 @@ export default function AbilitySelect() {
   function onSearchChange(value: string) {
     setSearchTerm(value);
   }
-
-  function onClose() {
-    setSearchTerm('');
-    abilitySelect.close();
-  }
-
   return (
     <Dialog
       {...bindDialog(abilitySelect)}
       fullWidth={true}
       maxWidth={'xs'}
       PaperProps={{ sx: { height: '100%' } }}
-      onClose={onClose}
+      TransitionProps={{ onExited: () => setSearchTerm('') }}
       disableRestoreFocus={true}>
       <DialogTitle>Select an ability</DialogTitle>
       <Divider />
