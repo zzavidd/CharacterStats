@@ -110,9 +110,18 @@ function useAbilitySieve(allAbilities: PokeAbilityMap, searchTerm: string) {
 
   if (searchTerm) {
     abilities = new Fuse(abilities, {
-      keys: ['name', 'description', 'commonType'],
+      keys: [
+        { name: 'name', weight: 10 },
+        { name: 'description', weight: 5 },
+        {
+          name: 'commonType',
+          getFn: (move) => TypeName[move.commonType],
+          weight: 1,
+        },
+      ],
       ignoreLocation: true,
       threshold: 0.1,
+      shouldSort: true,
     })
       .search(searchTerm)
       .map(({ item }) => item);

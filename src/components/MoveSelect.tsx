@@ -142,10 +142,14 @@ function useMoveSieve(allMoves: PokeMoveMap, searchTerm: string) {
 
   if (searchTerm) {
     moves = new Fuse(moves, {
-      keys: ['name', 'description', 'type'],
+      keys: [
+        { name: 'name', weight: 10 },
+        { name: 'description', weight: 5 },
+        { name: 'type', getFn: (move) => TypeName[move.type], weight: 1 },
+      ],
       ignoreLocation: true,
-      threshold: 0.1,
       shouldSort: true,
+      threshold: 0.1,
     })
       .search(searchTerm)
       .map(({ item }) => item);
