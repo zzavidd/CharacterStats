@@ -101,6 +101,10 @@ function SpreadMoveDialog() {
   const { setValue, watch } = useFormContext<CharacterInput>();
   const { spreadMoveDialog } = useContext(CharacterFormContext);
 
+  const { token } = useTypeColorToken();
+  const t = useTheme();
+  const matches = useMediaQuery(t.breakpoints.up('sm'));
+
   function spreadLearnset() {
     const learnsetInput = watch('learnset');
     setValue(
@@ -109,8 +113,6 @@ function SpreadMoveDialog() {
     );
     spreadMoveDialog.close();
   }
-
-  const { token } = useTypeColorToken();
 
   return (
     <Dialog
@@ -123,6 +125,7 @@ function SpreadMoveDialog() {
         <Stack rowGap={4}>
           <Typography>Set the maximum level for distribution:</Typography>
           <TextField
+            type={matches ? undefined : 'number'}
             value={maxLevel}
             onChange={(e) => setMaxLevel(Number(e.target.value))}
             label={'Max Level:'}

@@ -24,8 +24,8 @@ export default function MoveField({ index }: MoveFieldProps) {
         sx={{
           borderRadius: 1,
           height: '100%',
-          width: '100%',
           overflow: 'hidden',
+          width: '100%',
         }}>
         <Stack
           direction={'row'}

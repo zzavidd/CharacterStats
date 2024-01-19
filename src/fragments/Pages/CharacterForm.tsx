@@ -10,6 +10,8 @@ import {
   Stack,
   TextField,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import { Controller, useFormContext } from 'react-hook-form';
 
@@ -31,6 +33,8 @@ export default function CharacterForm() {
     watch,
   } = useFormContext<CharacterInput>();
   const { token } = useTypeColorToken();
+  const t = useTheme();
+  const matches = useMediaQuery(t.breakpoints.up('sm'));
 
   return (
     <Stack rowGap={4}>
@@ -91,6 +95,7 @@ export default function CharacterForm() {
                   valueAsNumber: true,
                   validate: (v) => v > 0,
                 })}
+                type={matches ? undefined : 'number'}
                 label={StatMap[stat]}
                 color={token}
                 inputMode={'numeric'}
