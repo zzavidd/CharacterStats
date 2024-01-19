@@ -56,31 +56,35 @@ export function spreadMoves(
   learnsetInput: LearnsetInput,
   maxLevel: number,
 ): LearnsetInput {
-  const min = 2;
+  const min = Math.floor(Math.random() * 4);
   const max = Math.min(maxLevel, 100);
 
   const learnset = convertInputToLearnset(learnsetInput);
-  delete learnset['0'];
-  const moveCount = Object.keys(learnset).length;
+  const moveCount =
+    Object.entries(learnset).reduce((acc, [level, moveIds]) => {
+      if (level === '0') {
+        return acc + moveIds.length;
+      }
+      return acc + 1;
+    }, 0) - 1;
 
   const deviation = (max - min) / moveCount;
+  const levels = Array.from({ length: moveCount }).map((_, i) =>
+    Math.round(deviation * (i + 1)),
+  );
 
-  let currentLevel = 1;
+  let levelIndex = 0;
   const newLearnset = Object.entries(learnset).flatMap(([key, moveIds]) => {
     const level = Number(key);
     if (level === 1) {
       return moveIds.map((moveId) => ({ level, moveId }));
     }
 
-    const coefficient = deviation - Math.floor(deviation);
-    const interval =
-      Math.random() < coefficient
-        ? Math.floor(deviation)
-        : Math.ceil(deviation);
-    currentLevel += interval;
-    const newLevel = Math.min(currentLevel, max);
-
-    return moveIds.map((moveId) => ({ level: newLevel, moveId }));
+    return moveIds.map((moveId) => {
+      const entry = { level: levels[levelIndex], moveId };
+      levelIndex++;
+      return entry;
+    });
   });
 
   return newLearnset;

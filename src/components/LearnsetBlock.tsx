@@ -11,6 +11,8 @@ import {
   Stack,
   TextField,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import { bindDialog, bindTrigger } from 'material-ui-popup-state';
 import { useContext, useState } from 'react';
@@ -36,6 +38,8 @@ export default function LearnsetBlock() {
   const learnsetValues = watch('learnset');
 
   const { token } = useTypeColorToken();
+  const t = useTheme();
+  const matches = useMediaQuery(t.breakpoints.up('sm'));
 
   return (
     <Stack rowGap={4}>
@@ -62,6 +66,7 @@ export default function LearnsetBlock() {
                 valueAsNumber: true,
                 validate: (v) => v >= 0 && v <= 100,
               })}
+              type={matches ? undefined : 'number'}
               onBlur={() => {
                 setValue(
                   'learnset',
@@ -98,7 +103,10 @@ function SpreadMoveDialog() {
 
   function spreadLearnset() {
     const learnsetInput = watch('learnset');
-    setValue('learnset', spreadMoves(learnsetInput, maxLevel));
+    setValue(
+      'learnset',
+      spreadMoves(learnsetInput, maxLevel).sort((a, b) => a.level - b.level),
+    );
     spreadMoveDialog.close();
   }
 

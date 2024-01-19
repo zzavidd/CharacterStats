@@ -147,7 +147,9 @@ function FormFooter() {
   const { token } = useTypeColorToken();
 
   return (
-    <Paper square={true} sx={{ position: 'sticky', bottom: 0 }}>
+    <Paper
+      square={true}
+      sx={{ position: { xs: undefined, md: 'sticky' }, bottom: 0 }}>
       <Toolbar>
         <Container maxWidth={'xs'}>
           <Stack p={4} direction={'row'} columnGap={2}>
